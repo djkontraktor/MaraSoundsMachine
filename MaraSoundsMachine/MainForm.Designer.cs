@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.soundPanel_tabControl = new System.Windows.Forms.TabControl();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // soundPanel_tabControl
@@ -42,6 +43,16 @@
             this.soundPanel_tabControl.Size = new System.Drawing.Size(905, 459);
             this.soundPanel_tabControl.TabIndex = 0;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1, 75);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.testButtonClick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -49,7 +60,9 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::MaraSoundsMachine.Properties.Resources.m1_sounds;
             this.ClientSize = new System.Drawing.Size(933, 461);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.soundPanel_tabControl);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Lime;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -66,6 +79,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl soundPanel_tabControl;
+        private System.Windows.Forms.Button button1;
     }
 }
 

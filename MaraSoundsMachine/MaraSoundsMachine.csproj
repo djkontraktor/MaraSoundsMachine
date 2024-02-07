@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectSound, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DirectSound.4.2.0\lib\net45\SharpDX.DirectSound.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Wave.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +74,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -85,6 +93,180 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\m1_sounds.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4 Creak 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4 Creak 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\29 Loon 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\29 Loon 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\29 Loon 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\90 Water 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\90 Water 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\90 Water 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\91 Sewage 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\91 Sewage 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\91 Sewage 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\92 Lava 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\92 Lava 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\92 Lava 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\93 Goo 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\93 Goo 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\93 Goo 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\94 Under Stuff.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\95 Wind 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\95 Wind 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\95 Wind 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\95 Wind 3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\96 Waterfall 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\96 Waterfall 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\97 Siren.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\98 Fan.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\100 Spht Platform.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\101 Alien Harmonics 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\101 Alien Harmonics 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\102 Heavy Spht Platform.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\103 Light Machinery.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\104 Heavy Machinery.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\105 Transformer.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\106 Sparking Transformer 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\106 Sparking Transformer 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\106 Sparking Transformer 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\107 Water Drip 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\107 Water Drip 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\107 Water Drip 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\107 Water Drip 3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\169 Machine Binder.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\170 Machine Bookpress.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\171 Machine Puncher.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\172 Electric.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\173 Alarm.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\174 Night Wind 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\174 Night Wind 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\174 Night Wind 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\175 Surface Explosion 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\175 Surface Explosion 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\175 Surface Explosion 2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\176 Underground Explosion.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\189 Pfhor Platform.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\193 Pfhor Door.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\201 Alien Noise 1 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\201 Alien Noise 1 1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\202 Alien Noise 2 0.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\202 Alien Noise 2 1.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
