@@ -14,7 +14,7 @@ namespace MaraSoundsMachine
             WaveStream = LoadWaveFile(waveName);
         }
 
-        private System.IO.UnmanagedMemoryStream waveStream;
+        private System.IO.UnmanagedMemoryStream waveStream = Properties.Resources._100_Spht_Platform;
         public System.IO.UnmanagedMemoryStream WaveStream
         {
             get

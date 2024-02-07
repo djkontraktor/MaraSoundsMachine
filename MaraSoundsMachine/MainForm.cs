@@ -67,8 +67,7 @@ namespace MaraSoundsMachine
 
             for (int i = 0; i < numberOfSamples; i++)
             {
-                double vibrato = Math.Cos(2 * Math.PI * 10.0 * i / waveFormat.SampleRate);
-                short value = (short)(Math.Cos(2 * Math.PI * (220.0 + 4.0 * vibrato) * i / waveFormat.SampleRate) * 16384); // Not too loud
+                short value = (short)sample.WaveStream.ReadByte();
                 dataPart1.Write(value);
                 dataPart1.Write(value);
             }
@@ -87,7 +86,7 @@ namespace MaraSoundsMachine
 
         private void testButtonClick(object sender, EventArgs e)
         {
-            Wave testSample = new Wave(WaveName.JjaroCreak0);
+            Wave testSample = new Wave(WaveName.Loon0);
             PlayWave(testSample, true);
         }
     }
