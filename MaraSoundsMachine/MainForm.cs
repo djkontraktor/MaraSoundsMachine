@@ -24,9 +24,12 @@ namespace MaraSoundsMachine
 
         private void MainFormResized(object sender, EventArgs e)
         {
+            ResizeTabControl();
+        }
 
-            // Adjust the size of the tab box now proportionally so
-            soundPanel_tabControl.Size = MainForm.Size;
+        private void ResizeTabControl()
+        {
+            soundPanel_tabControl.Size = new Size(this.Size.Width - 50, this.Size.Height - 70);
         }
     }
 }

@@ -58,7 +58,7 @@
             this.Name = "MainForm";
             this.Text = "Marathon Sounds Machine v0.1";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResizeEnd += new System.EventHandler(this.MainFormResized);
+            this.Resize += new System.EventHandler(this.MainFormResized);
             this.ResumeLayout(false);
 
         }
