@@ -15,6 +15,7 @@ namespace MaraSoundsMachine
         public MainForm()
         {
             InitializeComponent();
+            ResizeTabControl();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
