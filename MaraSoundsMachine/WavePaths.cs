@@ -199,7 +199,6 @@ namespace MaraSoundsMachine
 
         public enum WaveName
         {
-            Silence,
             JjaroCreak0,
             JjaroCreak1,
             Loon0,
@@ -258,6 +257,41 @@ namespace MaraSoundsMachine
             AlienNoise1_1,
             AlienNoise2_0,
             AlienNoise2_1
+        }
+
+        public enum SampleName
+        {
+            JjaroCreak,
+            Loon,
+            Water,
+            Sewage,
+            Lava,
+            Goo,
+            UnderStuff,
+            Wind,
+            Waterfall,
+            Siren,
+            Fan,
+            SphtPlatform,
+            AlienHarmonics,
+            HeavySphtPlatform,
+            LightMachinery,
+            HeavyMachinery,
+            Transformer,
+            SparkingTransformer,
+            WaterDrip,
+            MachineBinder,
+            MachineBookpress,
+            MachinePuncher,
+            Electric,
+            Alarm,
+            NightWind,
+            SurfaceExplosion,
+            UndergroundExplosion,
+            PfhorPlatform,
+            PfhorDoor,
+            AlienNoise1,
+            AlienNoise2
         }
     }
 }

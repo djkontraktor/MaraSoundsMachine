@@ -37,10 +37,12 @@ namespace MaraSoundsMachine
             ResizeTabControl();
         }
 
-        private void StartPlayWave(string filePath, float volume, float pan)
+        private void StartPlayWave(WaveName waveFile, float volume, float pan)
         {
             audioBufferBusy = false;
-            
+
+            string filePath = GetWaveFilePath(waveFile);
+
             SoundStream stream = new SoundStream(File.OpenRead(filePath));
 
             WaveFormat waveFormat = stream.Format;
@@ -84,21 +86,28 @@ namespace MaraSoundsMachine
 
         private void testButtonClick(object sender, EventArgs e)
         {
-            string wavePath = GetWaveFilePath(WaveName.Loon0);
-            StartPlayWave(wavePath, 1, 0);
+            StartPlayWave(WaveName.Loon0, 1, 0);
         }
 
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
-            soundPanel_tabControl.TabPages.Add("Test");
+            soundPanel_tabControl.TabPages.Add("Water");
         }
 
         private void removeSoundSource_buttonClick(object sender, EventArgs e)
         {
-            if (soundPanel_tabControl.TabPages.Count > 0)
+            if (soundPanel_tabControl.TabPages.Count > 1)
             {
                 soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
-            }         
+            }
+        }
+
+        private void panning_mouseRelease(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                panControl_trackBar.Value = 0;
+            }
         }
     }
 }
