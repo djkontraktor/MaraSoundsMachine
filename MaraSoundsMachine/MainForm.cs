@@ -37,7 +37,7 @@ namespace MaraSoundsMachine
             ResizeTabControl();
         }
 
-        private void StartPlayWave(string filePath, bool looping)
+        private void StartPlayWave(string filePath, float volume, float pan)
         {
             audioBufferBusy = false;
             
@@ -56,11 +56,14 @@ namespace MaraSoundsMachine
 
             stream.Close();
 
-            var sourceVoice = new SourceVoice(device, waveFormat, true);
+            var sourceVoice = new SourceVoice(device, waveFormat, true);        
 
             // Adds a sample callback to check that they are working on source voices
             sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
             sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+
+            sourceVoice.SetVolume(volume);
+
             sourceVoice.Start();
 
             // Stop sound
@@ -82,7 +85,20 @@ namespace MaraSoundsMachine
         private void testButtonClick(object sender, EventArgs e)
         {
             string wavePath = GetWaveFilePath(WaveName.Loon0);
-            StartPlayWave(wavePath, true);
+            StartPlayWave(wavePath, 1, 0);
+        }
+
+        private void addSoundSource_buttonClick(object sender, EventArgs e)
+        {
+            soundPanel_tabControl.TabPages.Add("Test");
+        }
+
+        private void removeSoundSource_buttonClick(object sender, EventArgs e)
+        {
+            if (soundPanel_tabControl.TabPages.Count > 0)
+            {
+                soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
+            }         
         }
     }
 }
