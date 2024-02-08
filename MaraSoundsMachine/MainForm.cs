@@ -47,7 +47,7 @@ namespace MaraSoundsMachine
 
             audioBufferBusy = true;
 
-            var buffer = new AudioBuffer
+            AudioBuffer buffer = new AudioBuffer
             {
                 Stream = stream.ToDataStream(),
                 AudioBytes = (int)stream.Length,
@@ -63,9 +63,10 @@ namespace MaraSoundsMachine
             sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
             sourceVoice.Start();
 
-            sourceVoice.DestroyVoice();
-            sourceVoice.Dispose();
-            buffer.Stream.Dispose();
+            // Stop sound
+            //sourceVoice.DestroyVoice();
+            //sourceVoice.Dispose();
+            //buffer.Stream.Dispose();
         }
 
         public static bool IsKeyPressed(ConsoleKey key)
