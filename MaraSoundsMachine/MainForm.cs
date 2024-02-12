@@ -14,13 +14,11 @@ using SharpDX.XAudio2;
 
 namespace MaraSoundsMachine
 {
+
     public partial class MainForm : Form
     {
 
-        static XAudio2 device = new XAudio2();
-        static MasteringVoice thisMasteringVoice = new MasteringVoice(device);
-        static bool audioBufferBusy = false;
-
+        #region Main Form Components
         public MainForm()
         {
             InitializeComponent();
@@ -36,49 +34,9 @@ namespace MaraSoundsMachine
         {
             ResizeTabControl();
         }
+        #endregion
 
-        private void StartPlayWave(WaveName waveFile, float volume, float pan)
-        {
-            audioBufferBusy = false;
-
-            string filePath = GetWaveFilePath(waveFile);
-
-            SoundStream stream = new SoundStream(File.OpenRead(filePath));
-
-            WaveFormat waveFormat = stream.Format;
-
-            audioBufferBusy = true;
-
-            AudioBuffer buffer = new AudioBuffer
-            {
-                Stream = stream.ToDataStream(),
-                AudioBytes = (int)stream.Length,
-                Flags = BufferFlags.EndOfStream
-            };
-
-            stream.Close();
-
-            var sourceVoice = new SourceVoice(device, waveFormat, true);        
-
-            // Adds a sample callback to check that they are working on source voices
-            sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
-            sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
-
-            sourceVoice.SetVolume(volume);
-
-            sourceVoice.Start();
-
-            // Stop sound
-            //sourceVoice.DestroyVoice();
-            //sourceVoice.Dispose();
-            //buffer.Stream.Dispose();
-        }
-
-        public static bool IsKeyPressed(ConsoleKey key)
-        {
-            return Console.KeyAvailable && Console.ReadKey(true).Key == key;
-        }
-
+        #region Tab Control Components
         private void ResizeTabControl()
         {
             soundPanel_tabControl.Size = new Size(this.Size.Width - 50, this.Size.Height - 70);
@@ -86,7 +44,7 @@ namespace MaraSoundsMachine
 
         private void testButtonClick(object sender, EventArgs e)
         {
-            StartPlayWave(WaveName.Loon0, 1, 0);
+            AudioHandler.StartPlayWave(AudioHandler.WaveName.Loon0, 1, 0);
         }
 
         private void addSoundSource_buttonClick(object sender, EventArgs e)
@@ -109,5 +67,7 @@ namespace MaraSoundsMachine
                 panControl_trackBar.Value = 0;
             }
         }
+        #endregion
+
     }
 }

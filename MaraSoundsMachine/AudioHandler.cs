@@ -1,16 +1,63 @@
-﻿using System;
+﻿using SharpDX.Multimedia;
+using SharpDX.XAudio2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using static MaraSoundsMachine.MainForm;
 
 namespace MaraSoundsMachine
 {
-    public partial class MainForm : Form
+    public static class AudioHandler
     {
-        private string GetWaveFilePath(WaveName waveName)
+        // Global Variables
+        public static XAudio2 yourAudiodevice = new XAudio2();
+        public static MasteringVoice thisMasteringVoice = new MasteringVoice(yourAudiodevice);
+        public static bool audioBufferBusy = false;
+
+        #region Stream Handling
+        public static void StartPlayWave(WaveName waveFile, float volume, float pan)
+        {
+            audioBufferBusy = false;
+
+            string filePath = GetWaveFilePath(waveFile);
+
+            SoundStream stream = new SoundStream(File.OpenRead(filePath));
+
+            WaveFormat waveFormat = stream.Format;
+
+            audioBufferBusy = true;
+
+            AudioBuffer buffer = new AudioBuffer
+            {
+                Stream = stream.ToDataStream(),
+                AudioBytes = (int)stream.Length,
+                Flags = BufferFlags.EndOfStream
+            };
+
+            stream.Close();
+
+            var sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+
+            // Adds a sample callback to check that they are working on source voices
+            sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
+            sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+
+            sourceVoice.SetVolume(volume);
+
+            sourceVoice.Start();
+
+            // Stop sound
+            //sourceVoice.DestroyVoice();
+            //sourceVoice.Dispose();
+            //buffer.Stream.Dispose();
+        }
+        #endregion
+
+        #region Path Handling
+        public static string GetWaveFilePath(WaveName waveName)
         {
             string fileShortName = "";
 
@@ -196,7 +243,9 @@ namespace MaraSoundsMachine
 
             return filePath;
         }
+        #endregion
 
+        #region Enums
         public enum WaveName
         {
             JjaroCreak0,
@@ -293,5 +342,6 @@ namespace MaraSoundsMachine
             AlienNoise1,
             AlienNoise2
         }
+        #endregion
     }
 }
