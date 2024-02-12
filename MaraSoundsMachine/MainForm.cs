@@ -23,6 +23,9 @@ namespace MaraSoundsMachine
         {
             InitializeComponent();
             ResizeTabControl();
+
+            AudioHandler.SoundSource newSoundSource = new AudioHandler.SoundSource();
+            AudioHandler.soundSourcesList.Add(newSoundSource);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -46,7 +49,8 @@ namespace MaraSoundsMachine
         {
             if (e.Button == MouseButtons.Right)
             {
-                panControl_trackBar.Value = 0;
+                TrackBar thisTrackBar = (TrackBar)soundPanel_tabControl.SelectedTab.Controls.Find("panControl_trackBar", false)[0];
+                thisTrackBar.Value = 0;
             }
         }
 
@@ -279,7 +283,7 @@ namespace MaraSoundsMachine
             panControl_trackBar.SmallChange = 5;
             panControl_trackBar.TabIndex = 4;
             panControl_trackBar.TickFrequency = 5;
-            panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panning_mouseRelease);
+            panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(panning_mouseRelease);
 
             sampleSelector_Label.AutoSize = true;
             sampleSelector_Label.Location = new System.Drawing.Point(110, 54);
@@ -328,6 +332,7 @@ namespace MaraSoundsMachine
             sampleSelector_comboBox.Size = new System.Drawing.Size(271, 22);
             sampleSelector_comboBox.TabIndex = 2;
             sampleSelector_comboBox.Text = "Jjaro Ship Creak";
+            sampleSelector_comboBox.SelectedIndexChanged += new System.EventHandler(this.soundSource_ComboBox_StateChange);
 
             soundSource_Enabled_checkBox.AutoSize = true;
             soundSource_Enabled_checkBox.Location = new System.Drawing.Point(105, 17);
@@ -387,9 +392,9 @@ namespace MaraSoundsMachine
 
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
-            TabPage defaultTabPage = ReturnDefaultTabPage();
-
-            soundPanel_tabControl.TabPages.Add(defaultTabPage);
+            soundPanel_tabControl.TabPages.Add(ReturnDefaultTabPage());
+            AudioHandler.SoundSource newSoundSource = new AudioHandler.SoundSource();
+            AudioHandler.soundSourcesList.Add(newSoundSource);
         }
 
         private void removeSoundSource_buttonClick(object sender, EventArgs e)
@@ -397,9 +402,119 @@ namespace MaraSoundsMachine
             if (soundPanel_tabControl.TabPages.Count > 1)
             {
                 soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
+                AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
             }
         }
         #endregion
 
+        private void soundSource_ComboBox_StateChange(object sender, EventArgs e)
+        {
+            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
+
+            ComboBox thisComboBox = (ComboBox)sender;
+
+            string requestedSample = thisComboBox.Text;
+
+            AudioHandler.SampleName thisSampleName = AudioHandler.SampleName.JjaroCreak;
+
+            switch (requestedSample)
+            {
+                case "Jjaro Ship Creak":
+                    thisSampleName = AudioHandler.SampleName.JjaroCreak;
+                    break;
+                case "Loon":
+                    thisSampleName = AudioHandler.SampleName.Loon;
+                    break;
+                case "Water":
+                    thisSampleName = AudioHandler.SampleName.Water;
+                    break;
+                case "Sewage":
+                    thisSampleName = AudioHandler.SampleName.Sewage;
+                    break;
+                case "Lava":
+                    thisSampleName = AudioHandler.SampleName.Lava;
+                    break;
+                case "Goo":
+                    thisSampleName = AudioHandler.SampleName.Goo;
+                    break;
+                case "Under Media":
+                    thisSampleName = AudioHandler.SampleName.UnderStuff;
+                    break;
+                case "Wind":
+                    thisSampleName = AudioHandler.SampleName.Wind;
+                    break;
+                case "Waterfall":
+                    thisSampleName = AudioHandler.SampleName.Waterfall;
+                    break;
+                case "Siren":
+                    thisSampleName = AudioHandler.SampleName.Siren;
+                    break;
+                case "Fan":
+                    thisSampleName = AudioHandler.SampleName.Fan;
+                    break;
+                case "S\'pht Platform":
+                    thisSampleName = AudioHandler.SampleName.SphtPlatform;
+                    break;
+                case "Alien Harmonics":
+                    thisSampleName = AudioHandler.SampleName.AlienHarmonics;
+                    break;
+                case "Heavy S\'pht Platform":
+                    thisSampleName = AudioHandler.SampleName.HeavySphtPlatform;
+                    break;
+                case "Light Machinery":
+                    thisSampleName = AudioHandler.SampleName.LightMachinery;
+                    break;
+                case "Heavy Machinery":
+                    thisSampleName = AudioHandler.SampleName.HeavyMachinery;
+                    break;
+                case "Transformer":
+                    thisSampleName = AudioHandler.SampleName.Transformer;
+                    break;
+                case "Sparking Transformer":
+                    thisSampleName = AudioHandler.SampleName.SparkingTransformer;
+                    break;
+                case "Water Drip":
+                    thisSampleName = AudioHandler.SampleName.WaterDrip;
+                    break;
+                case "Machine Binder":
+                    thisSampleName = AudioHandler.SampleName.MachineBinder;
+                    break;
+                case "Machine Bookpress":
+                    thisSampleName = AudioHandler.SampleName.MachineBookpress;
+                    break;
+                case "Machine Puncher":
+                    thisSampleName = AudioHandler.SampleName.MachinePuncher;
+                    break;
+                case "Electric":
+                    thisSampleName = AudioHandler.SampleName.Electric;
+                    break;
+                case "Alarm":
+                    thisSampleName = AudioHandler.SampleName.Alarm;
+                    break;
+                case "Night Wind":
+                    thisSampleName = AudioHandler.SampleName.NightWind;
+                    break;
+                case "Surface Explosion":
+                    thisSampleName = AudioHandler.SampleName.SurfaceExplosion;
+                    break;
+                case "Underground Explosion":
+                    thisSampleName = AudioHandler.SampleName.UndergroundExplosion;
+                    break;
+                case "Pfhor Platform":
+                    thisSampleName = AudioHandler.SampleName.PfhorPlatform;
+                    break;
+                case "Pfhor Door":
+                    thisSampleName = AudioHandler.SampleName.PfhorDoor;
+                    break;
+                case "Alien Ship 1":
+                    thisSampleName = AudioHandler.SampleName.AlienNoise1;
+                    break;
+                case "Alien Ship 2":
+                    thisSampleName = AudioHandler.SampleName.AlienNoise2;
+                    break;
+            }
+
+            AudioHandler.soundSourcesList[sourceIndex].ThisSample = thisSampleName;
+        }
     }
 }

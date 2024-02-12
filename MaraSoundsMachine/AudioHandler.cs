@@ -16,6 +16,7 @@ namespace MaraSoundsMachine
         public static XAudio2 yourAudiodevice = new XAudio2();
         public static MasteringVoice thisMasteringVoice = new MasteringVoice(yourAudiodevice);
         public static bool audioBufferBusy = false;
+        public static List<SoundSource> soundSourcesList = new List<SoundSource>();
 
         #region Stream Handling
         public static void StartPlayWave(WaveName waveFile, float volume, float pan)
@@ -244,6 +245,65 @@ namespace MaraSoundsMachine
             return filePath;
         }
         #endregion
+
+        public class SoundSource
+        {
+            private SampleName thisSample = SampleName.JjaroCreak;
+            public SampleName ThisSample
+            {
+                get { return thisSample; }
+                set { thisSample = value; }
+            }
+
+            private bool enabled = false;
+            public bool Enabled
+            {
+                get { return enabled; }
+                set { enabled = value; }
+            }
+
+            private double volume = 100;
+            public double Volume
+            {
+                get { return volume; }
+                set { volume = value; }
+            }
+
+            private double pan = 0;
+            public double Pan
+            {
+                get { return pan; }
+                set { pan = value; }
+            }
+
+            private double baseFrequency = 1;
+            public double BaseFrequency
+            {
+                get { return baseFrequency; }
+                set { baseFrequency = value; }
+            }
+
+            private double deltaPan = 0;
+            public double DeltaPan
+            {
+                get { return deltaPan; }
+                set { deltaPan = value; }
+            }
+
+            private double deltaVolume = 0;
+            public double DeltaVolume
+            {
+                get { return deltaVolume; }
+                set { deltaVolume = value; }
+            }
+
+            private double deltaFrequency = 0;
+            public double DeltaFrequency
+            {
+                get { return deltaFrequency; }
+                set { deltaFrequency = value; }
+            }
+        }
 
         #region Enums
         public enum WaveName
