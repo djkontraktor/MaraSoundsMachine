@@ -394,11 +394,27 @@ namespace MaraSoundsMachine
         #region Button Callbacks
         private void testButtonClick(object sender, EventArgs e)
         {
+            startPlayingAllSounds();
+        }
+
+        private void startPlayingAllSounds()
+        {
             foreach (AudioHandler.SoundSource soundSource in AudioHandler.soundSourcesList)
             {
                 if (soundSource.Enabled)
                 {
-                    AudioHandler.StartPlaySample(soundSource.ThisSample, soundSource.Volume, soundSource.Pan);
+                    Random randSeed = new Random();
+                    double signA = (randSeed.Next(2) == 0) ? -1 : 1;
+                    double signB = (randSeed.Next(2) == 0) ? -1 : 1;
+
+                    double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
+
+                    double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
+
+                    double instVolume = soundSource.Volume + randVolume;
+                    double instPan = soundSource.Pan + randPan;
+
+                    AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan);
                 }
             }
         }
@@ -543,7 +559,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar panTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].Pan = panTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].Pan = panTrackBar.Value / 100;
         }
 
         private void soundControl_volumeStateChanged(object sender, EventArgs e)
@@ -551,7 +567,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar volumeTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].Volume = volumeTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].Volume = volumeTrackBar.Value / 100;
         }
 
         private void soundControl_baseFrequencyValueChanged(object sender, EventArgs e)
@@ -559,7 +575,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar baseFreqTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].BaseFrequency = baseFreqTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].BaseFrequency = baseFreqTrackBar.Value / 50;
         }
 
         private void soundControl_panRandomnessValueChanged(object sender, EventArgs e)
@@ -567,7 +583,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar panRandomnessTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].DeltaPan = panRandomnessTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].DeltaPan = panRandomnessTrackBar.Value / 100;
         }
 
         private void soundControl_volumeRandomnessValueChanged(object sender, EventArgs e)
@@ -575,7 +591,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar volumeRandomnessTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].DeltaVolume = volumeRandomnessTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].DeltaVolume = volumeRandomnessTrackBar.Value / 100;
         }
 
         private void soundControl_freqRandomnessValueChanged(object sender, EventArgs e)
@@ -583,7 +599,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar freqRandomnessTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = freqRandomnessTrackBar.Value;
+            AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = freqRandomnessTrackBar.Value / 50;
         }
         #endregion
     }

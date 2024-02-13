@@ -405,7 +405,7 @@ namespace MaraSoundsMachine
                 set { enabled = value; }
             }
 
-            private double volume = 100;
+            private double volume = 1;
             public double Volume
             {
                 get { return volume; }
