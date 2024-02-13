@@ -157,6 +157,7 @@
             this.freqRandomness_trackBar.SmallChange = 5;
             this.freqRandomness_trackBar.TabIndex = 24;
             this.freqRandomness_trackBar.TickFrequency = 5;
+            this.freqRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_freqRandomnessValueChanged);
             // 
             // volumeRand1_Label
             // 
@@ -195,6 +196,7 @@
             this.volumeRandomness_trackBar.SmallChange = 5;
             this.volumeRandomness_trackBar.TabIndex = 20;
             this.volumeRandomness_trackBar.TickFrequency = 5;
+            this.volumeRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeRandomnessValueChanged);
             // 
             // panRandom1_Label
             // 
@@ -233,6 +235,7 @@
             this.panRandomness_trackBar.SmallChange = 5;
             this.panRandomness_trackBar.TabIndex = 16;
             this.panRandomness_trackBar.TickFrequency = 5;
+            this.panRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panRandomnessValueChanged);
             // 
             // randomSoundFreqH_Label
             // 
@@ -274,6 +277,7 @@
             this.randomFrequency_trackBar.TabIndex = 12;
             this.randomFrequency_trackBar.TickFrequency = 5;
             this.randomFrequency_trackBar.Value = 50;
+            this.randomFrequency_trackBar.ValueChanged += new System.EventHandler(this.soundControl_baseFrequencyValueChanged);
             // 
             // volume1_Label
             // 
@@ -314,6 +318,7 @@
             this.volumeControl_trackBar.TabIndex = 8;
             this.volumeControl_trackBar.TickFrequency = 5;
             this.volumeControl_trackBar.Value = 100;
+            this.volumeControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeStateChanged);
             // 
             // rEar_Label
             // 
