@@ -284,6 +284,7 @@ namespace MaraSoundsMachine
             panControl_trackBar.TabIndex = 4;
             panControl_trackBar.TickFrequency = 5;
             panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(panning_mouseRelease);
+            panControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panStateChanged);
 
             sampleSelector_Label.AutoSize = true;
             sampleSelector_Label.Location = new System.Drawing.Point(110, 54);
@@ -394,7 +395,7 @@ namespace MaraSoundsMachine
                 {
                     AudioHandler.StartPlaySample(soundSource.ThisSample, soundSource.Volume, soundSource.Pan);
                 }
-            }            
+            }
         }
 
         private void addSoundSource_buttonClick(object sender, EventArgs e)
@@ -414,10 +415,10 @@ namespace MaraSoundsMachine
         }
         #endregion
 
+        #region Tab Control Callbacks
         private void soundSource_ComboBox_StateChange(object sender, EventArgs e)
         {
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-
             ComboBox thisComboBox = (ComboBox)sender;
 
             string requestedSample = thisComboBox.Text;
@@ -527,10 +528,18 @@ namespace MaraSoundsMachine
         private void soundSource_CheckBoxStateChange(object sender, EventArgs e)
         {
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-
             CheckBox thisCheckBox = (CheckBox)sender;
 
             AudioHandler.soundSourcesList[sourceIndex].Enabled = thisCheckBox.Checked;
         }
+
+        private void soundControl_panStateChanged(object sender, EventArgs e)
+        {
+            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar panTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[sourceIndex].Pan = panTrackBar.Value;
+        }
+        #endregion
     }
 }

@@ -354,6 +354,7 @@
             this.panControl_trackBar.SmallChange = 5;
             this.panControl_trackBar.TabIndex = 4;
             this.panControl_trackBar.TickFrequency = 5;
+            this.panControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panStateChanged);
             this.panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panning_mouseRelease);
             // 
             // sampleSelector_Label
