@@ -24,8 +24,8 @@ namespace MaraSoundsMachine
             InitializeComponent();
             ResizeTabControl();
 
-            AudioHandler.SoundSource newSoundSource = new AudioHandler.SoundSource();
-            AudioHandler.soundSourcesList.Add(newSoundSource);
+            AudioHandler.SoundSource defaultSoundSource = new AudioHandler.SoundSource();
+            AudioHandler.soundSourcesList.Add(defaultSoundSource);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -387,7 +387,13 @@ namespace MaraSoundsMachine
         #region Button Callbacks
         private void testButtonClick(object sender, EventArgs e)
         {
-            AudioHandler.StartPlayWave(AudioHandler.WaveName.Loon0, 1, 0);
+            foreach (AudioHandler.SoundSource soundSource in AudioHandler.soundSourcesList)
+            {
+                if (soundSource.Enabled)
+                {
+                    AudioHandler.StartPlaySample(soundSource.ThisSample, soundSource.Volume, soundSource.Pan);
+                }
+            }            
         }
 
         private void addSoundSource_buttonClick(object sender, EventArgs e)
@@ -515,6 +521,15 @@ namespace MaraSoundsMachine
             }
 
             AudioHandler.soundSourcesList[sourceIndex].ThisSample = thisSampleName;
+        }
+
+        private void soundSource_CheckBoxStateChange(object sender, EventArgs e)
+        {
+            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
+
+            CheckBox thisCheckBox = (CheckBox)sender;
+
+            AudioHandler.soundSourcesList[sourceIndex].Enabled = thisCheckBox.Checked;
         }
     }
 }

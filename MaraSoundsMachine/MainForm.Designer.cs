@@ -418,6 +418,7 @@
             this.soundSource_Enabled_checkBox.TabIndex = 0;
             this.soundSource_Enabled_checkBox.Text = "Enabled?";
             this.soundSource_Enabled_checkBox.UseVisualStyleBackColor = true;
+            this.soundSource_Enabled_checkBox.CheckStateChanged += new System.EventHandler(this.soundSource_CheckBoxStateChange);
             // 
             // button1
             // 
