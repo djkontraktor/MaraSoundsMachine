@@ -341,6 +341,7 @@ namespace MaraSoundsMachine
             soundSource_Enabled_checkBox.TabIndex = 0;
             soundSource_Enabled_checkBox.Text = "Enabled?";
             soundSource_Enabled_checkBox.UseVisualStyleBackColor = true;
+            soundSource_Enabled_checkBox.CheckStateChanged += new System.EventHandler(this.soundSource_CheckBoxStateChange);
             #endregion
 
             #region Tab Page Definition
