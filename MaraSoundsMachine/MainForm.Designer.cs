@@ -74,7 +74,7 @@
             // soundPanel_tabControl
             // 
             this.soundPanel_tabControl.Controls.Add(this.soundSource_tabPage);
-            this.soundPanel_tabControl.Location = new System.Drawing.Point(14, 13);
+            this.soundPanel_tabControl.Location = new System.Drawing.Point(13, 36);
             this.soundPanel_tabControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.soundPanel_tabControl.Multiline = true;
             this.soundPanel_tabControl.Name = "soundPanel_tabControl";
@@ -429,18 +429,18 @@
             // button1
             // 
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(583, 5);
+            this.button1.Location = new System.Drawing.Point(328, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(118, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
+            this.button1.Text = "Start Playback";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.testButtonClick);
             // 
             // addSoundSource_Button
             // 
             this.addSoundSource_Button.ForeColor = System.Drawing.Color.Black;
-            this.addSoundSource_Button.Location = new System.Drawing.Point(227, 7);
+            this.addSoundSource_Button.Location = new System.Drawing.Point(13, 5);
             this.addSoundSource_Button.Name = "addSoundSource_Button";
             this.addSoundSource_Button.Size = new System.Drawing.Size(145, 23);
             this.addSoundSource_Button.TabIndex = 2;
@@ -451,7 +451,7 @@
             // removeSoundSource_Button
             // 
             this.removeSoundSource_Button.ForeColor = System.Drawing.Color.Black;
-            this.removeSoundSource_Button.Location = new System.Drawing.Point(390, 6);
+            this.removeSoundSource_Button.Location = new System.Drawing.Point(164, 5);
             this.removeSoundSource_Button.Name = "removeSoundSource_Button";
             this.removeSoundSource_Button.Size = new System.Drawing.Size(158, 23);
             this.removeSoundSource_Button.TabIndex = 3;
@@ -465,7 +465,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::MaraSoundsMachine.Properties.Resources.m1_sounds;
-            this.ClientSize = new System.Drawing.Size(933, 461);
+            this.ClientSize = new System.Drawing.Size(1064, 461);
             this.Controls.Add(this.removeSoundSource_Button);
             this.Controls.Add(this.addSoundSource_Button);
             this.Controls.Add(this.button1);

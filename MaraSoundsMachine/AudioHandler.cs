@@ -389,6 +389,110 @@ namespace MaraSoundsMachine
         }
         #endregion
 
+        public static string ReturnEnglishSampleName(SampleName sampleName)
+        {
+            string englishName = "";
+
+            switch (sampleName)
+            {
+                case AudioHandler.SampleName.JjaroCreak:
+                    englishName = "Jjaro Ship Creak";
+                    break;
+                case AudioHandler.SampleName.Loon:
+                    englishName = "Loon";
+                    break;
+                case AudioHandler.SampleName.Water:
+                    englishName = "Water";
+                    break;
+                case AudioHandler.SampleName.Sewage:
+                    englishName = "Sewage";
+                    break;
+                case AudioHandler.SampleName.Lava:
+                    englishName = "Lava";
+                    break;
+                case AudioHandler.SampleName.Goo:
+                    englishName = "Goo";
+                    break;
+                case AudioHandler.SampleName.UnderStuff:
+                    englishName = "Under Media";
+                    break;
+                case AudioHandler.SampleName.Wind:
+                    englishName = "Wind";
+                    break;
+                case AudioHandler.SampleName.Waterfall:
+                    englishName = "Waterfall";
+                    break;
+                case AudioHandler.SampleName.Siren:
+                    englishName = "Siren";
+                    break;
+                case AudioHandler.SampleName.Fan:
+                    englishName = "Fan";
+                    break;
+                case AudioHandler.SampleName.SphtPlatform:
+                    englishName = "S\'pht Platform";
+                    break;
+                case AudioHandler.SampleName.AlienHarmonics:
+                    englishName = "Alien Harmonics";
+                    break;
+                case AudioHandler.SampleName.HeavySphtPlatform:
+                    englishName = "Heavy S\'pht Platform";
+                    break;
+                case AudioHandler.SampleName.LightMachinery:
+                    englishName = "Light Machinery";
+                    break;
+                case AudioHandler.SampleName.HeavyMachinery:
+                    englishName = "Heavy Machinery";
+                    break;
+                case AudioHandler.SampleName.Transformer:
+                    englishName = "Transformer";
+                    break;
+                case AudioHandler.SampleName.SparkingTransformer:
+                    englishName = "Sparking Transformer";
+                    break;
+                case AudioHandler.SampleName.WaterDrip:
+                    englishName = "Water Drip";
+                    break;
+                case AudioHandler.SampleName.MachineBinder:
+                    englishName = "Machine Binder";
+                    break;
+                case AudioHandler.SampleName.MachineBookpress:
+                    englishName = "Machine Bookpress";
+                    break;
+                case AudioHandler.SampleName.MachinePuncher:
+                    englishName = "Machine Puncher";
+                    break;
+                case AudioHandler.SampleName.Electric:
+                    englishName = "Electric";
+                    break;
+                case AudioHandler.SampleName.Alarm:
+                    englishName = "Alarm";
+                    break;
+                case AudioHandler.SampleName.NightWind:
+                    englishName = "Night Wind";
+                    break;
+                case AudioHandler.SampleName.SurfaceExplosion:
+                    englishName = "Surface Explosion";
+                    break;
+                case AudioHandler.SampleName.UndergroundExplosion:
+                    englishName = "Underground Explosion";
+                    break;
+                case AudioHandler.SampleName.PfhorPlatform:
+                    englishName = "Pfhor Platform";
+                    break;
+                case AudioHandler.SampleName.PfhorDoor:
+                    englishName = "Pfhor Door";
+                    break;
+                case AudioHandler.SampleName.AlienNoise1:
+                    englishName = "Alien Ship 1";
+                    break;
+                case AudioHandler.SampleName.AlienNoise2:
+                    englishName = "Alien Ship 2";
+                    break;
+            }
+
+            return englishName;
+        }
+
         public class SoundSource
         {
             private SampleName thisSample = SampleName.JjaroCreak;
@@ -545,6 +649,8 @@ namespace MaraSoundsMachine
             AlienNoise1,
             AlienNoise2
         }
+
+
         #endregion
     }
 }

@@ -126,7 +126,7 @@ namespace MaraSoundsMachine
             freqRandomness_trackBar.SmallChange = 5;
             freqRandomness_trackBar.TabIndex = 24;
             freqRandomness_trackBar.TickFrequency = 5;
-            freqRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_freqRandomnessValueChanged);
+            freqRandomness_trackBar.ValueChanged += new System.EventHandler(soundControl_freqRandomnessValueChanged);
 
             volumeRand1_Label.AutoSize = true;
             volumeRand1_Label.Location = new System.Drawing.Point(550, 228);
@@ -157,7 +157,7 @@ namespace MaraSoundsMachine
             volumeRandomness_trackBar.SmallChange = 5;
             volumeRandomness_trackBar.TabIndex = 20;
             volumeRandomness_trackBar.TickFrequency = 5;
-            volumeRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeRandomnessValueChanged);
+            volumeRandomness_trackBar.ValueChanged += new System.EventHandler(soundControl_volumeRandomnessValueChanged);
 
             panRandom1_Label.AutoSize = true;
             panRandom1_Label.Location = new System.Drawing.Point(550, 154);
@@ -188,7 +188,7 @@ namespace MaraSoundsMachine
             panRandomness_trackBar.SmallChange = 5;
             panRandomness_trackBar.TabIndex = 16;
             panRandomness_trackBar.TickFrequency = 5;
-            panRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panRandomnessValueChanged);
+            panRandomness_trackBar.ValueChanged += new System.EventHandler(soundControl_panRandomnessValueChanged);
 
             randomSoundFreqH_Label.AutoSize = true;
             randomSoundFreqH_Label.Location = new System.Drawing.Point(261, 303);
@@ -222,7 +222,7 @@ namespace MaraSoundsMachine
             randomFrequency_trackBar.TabIndex = 12;
             randomFrequency_trackBar.TickFrequency = 5;
             randomFrequency_trackBar.Value = 50;
-            randomFrequency_trackBar.ValueChanged += new System.EventHandler(this.soundControl_baseFrequencyValueChanged);
+            randomFrequency_trackBar.ValueChanged += new System.EventHandler(soundControl_baseFrequencyValueChanged);
 
             volume1_Label.AutoSize = true;
             volume1_Label.Location = new System.Drawing.Point(261, 228);
@@ -255,7 +255,7 @@ namespace MaraSoundsMachine
             volumeControl_trackBar.TabIndex = 8;
             volumeControl_trackBar.TickFrequency = 5;
             volumeControl_trackBar.Value = 100;
-            volumeControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeStateChanged);
+            volumeControl_trackBar.ValueChanged += new System.EventHandler(soundControl_volumeStateChanged);
 
             rEar_Label.AutoSize = true;
             rEar_Label.Location = new System.Drawing.Point(268, 154);
@@ -289,7 +289,7 @@ namespace MaraSoundsMachine
             panControl_trackBar.TabIndex = 4;
             panControl_trackBar.TickFrequency = 5;
             panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(panning_mouseRelease);
-            panControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panStateChanged);
+            panControl_trackBar.ValueChanged += new System.EventHandler(soundControl_panStateChanged);
 
             sampleSelector_Label.AutoSize = true;
             sampleSelector_Label.Location = new System.Drawing.Point(110, 54);
@@ -338,7 +338,7 @@ namespace MaraSoundsMachine
             sampleSelector_comboBox.Size = new System.Drawing.Size(271, 22);
             sampleSelector_comboBox.TabIndex = 2;
             sampleSelector_comboBox.Text = "Jjaro Ship Creak";
-            sampleSelector_comboBox.SelectedIndexChanged += new System.EventHandler(this.soundSource_ComboBox_StateChange);
+            sampleSelector_comboBox.SelectedIndexChanged += new System.EventHandler(soundSource_ComboBox_StateChange);
 
             soundSource_Enabled_checkBox.AutoSize = true;
             soundSource_Enabled_checkBox.Location = new System.Drawing.Point(105, 17);
@@ -347,7 +347,7 @@ namespace MaraSoundsMachine
             soundSource_Enabled_checkBox.TabIndex = 0;
             soundSource_Enabled_checkBox.Text = "Enabled?";
             soundSource_Enabled_checkBox.UseVisualStyleBackColor = true;
-            soundSource_Enabled_checkBox.CheckStateChanged += new System.EventHandler(this.soundSource_CheckBoxStateChange);
+            soundSource_Enabled_checkBox.CheckStateChanged += new System.EventHandler(soundSource_CheckBoxStateChange);
             #endregion
 
             #region Tab Page Definition
@@ -440,7 +440,7 @@ namespace MaraSoundsMachine
         private void soundSource_ComboBox_StateChange(object sender, EventArgs e)
         {
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            ComboBox thisComboBox = (ComboBox)sender;
+            ComboBox thisComboBox = (ComboBox)sender;   
 
             string requestedSample = thisComboBox.Text;
 
@@ -544,6 +544,8 @@ namespace MaraSoundsMachine
             }
 
             AudioHandler.soundSourcesList[sourceIndex].ThisSample = thisSampleName;
+
+            this.soundPanel_tabControl.TabPages[sourceIndex].Text = AudioHandler.ReturnEnglishSampleName(thisSampleName);
         }
 
         private void soundSource_CheckBoxStateChange(object sender, EventArgs e)
@@ -599,7 +601,7 @@ namespace MaraSoundsMachine
             int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
             TrackBar freqRandomnessTrackBar = (TrackBar)sender;
 
-            AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = freqRandomnessTrackBar.Value / 50;
+            AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = (double)(freqRandomnessTrackBar.Value) / 50;
         }
         #endregion
     }
