@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MaraSoundsMachine.AudioHandler;
 using static MaraSoundsMachine.MainForm;
 
 namespace MaraSoundsMachine
@@ -17,12 +18,72 @@ namespace MaraSoundsMachine
         public static MasteringVoice thisMasteringVoice = new MasteringVoice(yourAudiodevice);
         public static bool audioBufferBusy = false;
         public static List<SoundSource> soundSourcesList = new List<SoundSource>();
+        public static bool audioPlaying = false;
 
         #region Stream Handling
-        public static void StartPlaySample(SampleName sampleName, double volume, double pan)
+        public static void AudioPlaybackLoop()
+        {
+            List<bool> isPlayingList = new List<bool>();
+
+            foreach (SoundSource soundSource in soundSourcesList)
+            {
+                isPlayingList.Add(false);
+            }
+
+            while (audioPlaying)
+            {
+
+                foreach (SoundSource soundSource in soundSourcesList)
+                {
+                    int soundIndex = soundSourcesList.IndexOf(soundSource);
+
+                    if (!isPlayingList[soundIndex] && soundSource.Enabled)
+                    {
+                        Random randSeed = new Random();
+                        double signA = (randSeed.Next(2) == 0) ? -1 : 1;
+                        double signB = (randSeed.Next(2) == 0) ? -1 : 1;
+                        double signC = (randSeed.Next(2) == 0) ? -1 : 1;
+
+                        double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
+                        double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
+                        double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
+
+                        double instVolume = soundSource.Volume + randVolume;
+                        double instPan = soundSource.Pan + randPan;
+                        double instPitch = soundSource.BaseFrequency + randPitch;
+
+                        AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
+                        isPlayingList[soundIndex] = true;
+                    }
+                }
+
+
+                System.Threading.Thread.Sleep(33);
+            }
+        }
+
+        public static void StartAudioPlayback()
+        {
+            audioPlaying = true;
+
+            AudioPlaybackLoop();
+        }
+
+        public static void StopAudioPlayback()
+        {
+            // Stop sound
+            //sourceVoice.DestroyVoice();
+            //sourceVoice.Dispose();
+            //buffer.Stream.Dispose();
+
+            audioPlaying = false;
+        }
+
+        public static void StartPlaySample(SampleName sampleName, double volume, double pan, double pitch)
         {
             float p_volume = (float)volume;
             float p_pan = (float)pan;
+            float p_pitch = (float)pitch;
             
             WaveName waveToPlay = WaveName.JjaroCreak0;
             List<WaveName> waveSelectionList = new List<WaveName>();
@@ -158,11 +219,13 @@ namespace MaraSoundsMachine
             waveToPlay = waveSelectionList[randomIndex];
             #endregion
 
+            bool isLooping = false;
+
             // Play that sample
-            StartPlayWave(waveToPlay, p_volume, p_pan);
+            StartPlayWave(waveToPlay, p_volume, p_pan, p_pitch, isLooping);
         }
 
-        public static void StartPlayWave(WaveName waveFile, float volume, float pan)
+        public static void StartPlayWave(WaveName waveFile, float volume, float pan, float pitch, bool isLooping)
         {
             audioBufferBusy = false;
 
@@ -191,12 +254,7 @@ namespace MaraSoundsMachine
 
             sourceVoice.SetVolume(volume);
 
-            sourceVoice.Start();
-
-            // Stop sound
-            //sourceVoice.DestroyVoice();
-            //sourceVoice.Dispose();
-            //buffer.Stream.Dispose();
+            sourceVoice.Start();         
         }
         #endregion
 
@@ -387,7 +445,6 @@ namespace MaraSoundsMachine
 
             return filePath;
         }
-        #endregion
 
         public static string ReturnEnglishSampleName(SampleName sampleName)
         {
@@ -489,10 +546,29 @@ namespace MaraSoundsMachine
                     englishName = "Alien Ship 2";
                     break;
             }
-
             return englishName;
         }
 
+        public static bool IsSoundSampleRandom(SampleName sampleName)
+        {
+            bool isRandom = false;
+
+            switch (sampleName)
+            {
+                case SampleName.JjaroCreak:
+                case SampleName.Loon:
+                case SampleName.WaterDrip:
+                case SampleName.SurfaceExplosion:
+                case SampleName.UndergroundExplosion:
+                    isRandom = true;
+                    break;
+            }
+
+            return isRandom;
+        }
+        #endregion
+
+        #region Classes
         public class SoundSource
         {
             private SampleName thisSample = SampleName.JjaroCreak;
@@ -551,6 +627,7 @@ namespace MaraSoundsMachine
                 set { deltaFrequency = value; }
             }
         }
+        #endregion
 
         #region Enums
         public enum WaveName
@@ -649,8 +726,6 @@ namespace MaraSoundsMachine
             AlienNoise1,
             AlienNoise2
         }
-
-
         #endregion
     }
 }

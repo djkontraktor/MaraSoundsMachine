@@ -58,7 +58,7 @@
             this.sampleSelector_Label = new System.Windows.Forms.Label();
             this.sampleSelector_comboBox = new System.Windows.Forms.ComboBox();
             this.soundSource_Enabled_checkBox = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.startPlayback_Button = new System.Windows.Forms.Button();
             this.addSoundSource_Button = new System.Windows.Forms.Button();
             this.removeSoundSource_Button = new System.Windows.Forms.Button();
             this.soundPanel_tabControl.SuspendLayout();
@@ -426,16 +426,16 @@
             this.soundSource_Enabled_checkBox.UseVisualStyleBackColor = true;
             this.soundSource_Enabled_checkBox.CheckStateChanged += new System.EventHandler(this.soundSource_CheckBoxStateChange);
             // 
-            // button1
+            // startPlayback_Button
             // 
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(328, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Start Playback";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.testButtonClick);
+            this.startPlayback_Button.ForeColor = System.Drawing.Color.Black;
+            this.startPlayback_Button.Location = new System.Drawing.Point(328, 5);
+            this.startPlayback_Button.Name = "startPlayback_Button";
+            this.startPlayback_Button.Size = new System.Drawing.Size(118, 23);
+            this.startPlayback_Button.TabIndex = 1;
+            this.startPlayback_Button.Text = "Start Playback";
+            this.startPlayback_Button.UseVisualStyleBackColor = true;
+            this.startPlayback_Button.Click += new System.EventHandler(this.startPlayback_ButtonClick);
             // 
             // addSoundSource_Button
             // 
@@ -468,7 +468,7 @@
             this.ClientSize = new System.Drawing.Size(1064, 461);
             this.Controls.Add(this.removeSoundSource_Button);
             this.Controls.Add(this.addSoundSource_Button);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.startPlayback_Button);
             this.Controls.Add(this.soundPanel_tabControl);
             this.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Lime;
@@ -495,7 +495,7 @@
         #endregion
 
         private System.Windows.Forms.TabControl soundPanel_tabControl;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button startPlayback_Button;
         private System.Windows.Forms.TabPage soundSource_tabPage;
         private System.Windows.Forms.CheckBox soundSource_Enabled_checkBox;
         private System.Windows.Forms.Button addSoundSource_Button;

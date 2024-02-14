@@ -392,33 +392,6 @@ namespace MaraSoundsMachine
         #endregion
 
         #region Button Callbacks
-        private void testButtonClick(object sender, EventArgs e)
-        {
-            startPlayingAllSounds();
-        }
-
-        private void startPlayingAllSounds()
-        {
-            foreach (AudioHandler.SoundSource soundSource in AudioHandler.soundSourcesList)
-            {
-                if (soundSource.Enabled)
-                {
-                    Random randSeed = new Random();
-                    double signA = (randSeed.Next(2) == 0) ? -1 : 1;
-                    double signB = (randSeed.Next(2) == 0) ? -1 : 1;
-
-                    double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
-
-                    double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
-
-                    double instVolume = soundSource.Volume + randVolume;
-                    double instPan = soundSource.Pan + randPan;
-
-                    AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan);
-                }
-            }
-        }
-
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
             soundPanel_tabControl.TabPages.Add(ReturnDefaultTabPage());
@@ -432,6 +405,20 @@ namespace MaraSoundsMachine
             {
                 soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
                 AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
+            }
+        }
+
+        private void startPlayback_ButtonClick(object sender, EventArgs e)
+        {
+            if (AudioHandler.audioPlaying)
+            {            
+                this.startPlayback_Button.Text = "Start Playback";
+                AudioHandler.StopAudioPlayback();
+            }
+            else
+            {               
+                this.startPlayback_Button.Text = "Stop Playback";
+                AudioHandler.StartAudioPlayback();
             }
         }
         #endregion
@@ -604,5 +591,7 @@ namespace MaraSoundsMachine
             AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = (double)(freqRandomnessTrackBar.Value) / 50;
         }
         #endregion
+
+
     }
 }
