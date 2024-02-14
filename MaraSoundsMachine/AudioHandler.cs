@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static MaraSoundsMachine.AudioHandler;
 using static MaraSoundsMachine.MainForm;
@@ -25,41 +26,50 @@ namespace MaraSoundsMachine
         {
             List<bool> isPlayingList = new List<bool>();
 
-            foreach (SoundSource soundSource in soundSourcesList)
+            Parallel.ForEach(soundSourcesList, soundSource =>
             {
                 isPlayingList.Add(false);
-            }
+            });
 
-            while (audioPlaying)
+            new Thread(() =>
             {
+                Thread.CurrentThread.IsBackground = true;
 
-                foreach (SoundSource soundSource in soundSourcesList)
+                while (audioPlaying)
                 {
-                    int soundIndex = soundSourcesList.IndexOf(soundSource);
-
-                    if (!isPlayingList[soundIndex] && soundSource.Enabled)
+                    Parallel.ForEach(soundSourcesList, soundSource =>
                     {
-                        Random randSeed = new Random();
-                        double signA = (randSeed.Next(2) == 0) ? -1 : 1;
-                        double signB = (randSeed.Next(2) == 0) ? -1 : 1;
-                        double signC = (randSeed.Next(2) == 0) ? -1 : 1;
+                        int soundIndex = soundSourcesList.IndexOf(soundSource);
 
-                        double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
-                        double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
-                        double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
+                        if (!isPlayingList[soundIndex] && soundSource.Enabled)
+                        {
+                            Random randSeed = new Random();
+                            double signA = (randSeed.Next(2) == 0) ? -1 : 1;
+                            double signB = (randSeed.Next(2) == 0) ? -1 : 1;
+                            double signC = (randSeed.Next(2) == 0) ? -1 : 1;
 
-                        double instVolume = soundSource.Volume + randVolume;
-                        double instPan = soundSource.Pan + randPan;
-                        double instPitch = soundSource.BaseFrequency + randPitch;
+                            double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
+                            double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
+                            double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
 
-                        AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
-                        isPlayingList[soundIndex] = true;
-                    }
+                            double instVolume = soundSource.Volume + randVolume;
+                            double instPan = soundSource.Pan + randPan;
+                            double instPitch = soundSource.BaseFrequency + randPitch;
+
+                            AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
+                            isPlayingList[soundIndex] = true;
+                        }
+                    });
                 }
 
+                if (!audioPlaying)
+                {
+                    StopAudioPlayback();
+                }
 
-                System.Threading.Thread.Sleep(33);
-            }
+            }).Start();
+
+            System.Threading.Thread.Sleep(33);
         }
 
         public static void StartAudioPlayback()
