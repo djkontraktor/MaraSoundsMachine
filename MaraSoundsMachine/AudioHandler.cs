@@ -47,11 +47,10 @@ namespace MaraSoundsMachine
             // Stop sound
             foreach (SoundSource soundSource in soundSourcesList)
             {
+                soundSource.ThisVoice.Stop();
                 soundSource.ThisVoice.DestroyVoice();
                 soundSource.ThisVoice.Dispose();
             }
-
-            soundSourcesList.Clear();
 
             audioPlaying = false;
         }

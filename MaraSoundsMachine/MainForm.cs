@@ -405,14 +405,17 @@ namespace MaraSoundsMachine
             {
                 soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
                 AudioHandler.StopAudioPlayback();
-                AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
+                if (AudioHandler.soundSourcesList.Count > 0)
+                {
+                    AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
+                }               
             }
         }
 
         private void startPlayback_ButtonClick(object sender, EventArgs e)
         {
             if (AudioHandler.audioPlaying)
-            {            
+            {
                 this.startPlayback_Button.Text = "Start Playback";
                 AudioHandler.StopAudioPlayback();
             }
@@ -427,14 +430,79 @@ namespace MaraSoundsMachine
         #region Tab Control Callbacks
         private void soundSource_ComboBox_StateChange(object sender, EventArgs e)
         {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
             ComboBox thisComboBox = (ComboBox)sender;   
 
-            string requestedSample = thisComboBox.Text;
+            string englishSampleName = thisComboBox.Text;
 
+            AudioHandler.soundSourcesList[currentTab].ThisSample = ReturnSampleNameFromEnglishString(englishSampleName);
+
+            this.soundPanel_tabControl.TabPages[currentTab].Text = englishSampleName;
+        }
+
+        private void soundSource_CheckBoxStateChange(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            CheckBox thisCheckBox = (CheckBox)sender;
+
+            AudioHandler.soundSourcesList[currentTab].Enabled = thisCheckBox.Checked;
+        }
+
+        private void soundControl_panStateChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar panTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].Pan = panTrackBar.Value / 100;
+        }
+
+        private void soundControl_volumeStateChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar volumeTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].Volume = volumeTrackBar.Value / 100;
+        }
+
+        private void soundControl_baseFrequencyValueChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar baseFreqTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].BaseFrequency = baseFreqTrackBar.Value / 50;
+        }
+
+        private void soundControl_panRandomnessValueChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar panRandomnessTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].DeltaPan = panRandomnessTrackBar.Value / 100;
+        }
+
+        private void soundControl_volumeRandomnessValueChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar volumeRandomnessTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].DeltaVolume = volumeRandomnessTrackBar.Value / 100;
+        }
+
+        private void soundControl_freqRandomnessValueChanged(object sender, EventArgs e)
+        {
+            int currentTab = this.soundPanel_tabControl.SelectedIndex;
+            TrackBar freqRandomnessTrackBar = (TrackBar)sender;
+
+            AudioHandler.soundSourcesList[currentTab].DeltaFrequency = (double)(freqRandomnessTrackBar.Value) / 50;
+        }
+        #endregion
+
+        #region Helper Methods
+        private AudioHandler.SampleName ReturnSampleNameFromEnglishString(string englishName)
+        {
             AudioHandler.SampleName thisSampleName = AudioHandler.SampleName.JjaroCreak;
 
-            switch (requestedSample)
+            switch (englishName)
             {
                 case "Jjaro Ship Creak":
                     thisSampleName = AudioHandler.SampleName.JjaroCreak;
@@ -531,68 +599,8 @@ namespace MaraSoundsMachine
                     break;
             }
 
-            AudioHandler.soundSourcesList[sourceIndex].ThisSample = thisSampleName;
-
-            this.soundPanel_tabControl.TabPages[sourceIndex].Text = AudioHandler.ReturnEnglishSampleName(thisSampleName);
-        }
-
-        private void soundSource_CheckBoxStateChange(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            CheckBox thisCheckBox = (CheckBox)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].Enabled = thisCheckBox.Checked;
-        }
-
-        private void soundControl_panStateChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar panTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].Pan = panTrackBar.Value / 100;
-        }
-
-        private void soundControl_volumeStateChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar volumeTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].Volume = volumeTrackBar.Value / 100;
-        }
-
-        private void soundControl_baseFrequencyValueChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar baseFreqTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].BaseFrequency = baseFreqTrackBar.Value / 50;
-        }
-
-        private void soundControl_panRandomnessValueChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar panRandomnessTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].DeltaPan = panRandomnessTrackBar.Value / 100;
-        }
-
-        private void soundControl_volumeRandomnessValueChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar volumeRandomnessTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].DeltaVolume = volumeRandomnessTrackBar.Value / 100;
-        }
-
-        private void soundControl_freqRandomnessValueChanged(object sender, EventArgs e)
-        {
-            int sourceIndex = this.soundPanel_tabControl.SelectedIndex;
-            TrackBar freqRandomnessTrackBar = (TrackBar)sender;
-
-            AudioHandler.soundSourcesList[sourceIndex].DeltaFrequency = (double)(freqRandomnessTrackBar.Value) / 50;
+            return thisSampleName;
         }
         #endregion
-
-
     }
 }
