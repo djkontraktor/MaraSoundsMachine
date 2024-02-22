@@ -22,7 +22,6 @@ namespace MaraSoundsMachine
         public MainForm()
         {
             InitializeComponent();
-            ResizeTabControl();
 
             AudioHandler.SoundSource defaultSoundSource = new AudioHandler.SoundSource();
             AudioHandler.soundSourcesList.Add(defaultSoundSource);
@@ -33,18 +32,9 @@ namespace MaraSoundsMachine
 
         }
 
-        private void MainFormResized(object sender, EventArgs e)
-        {
-            ResizeTabControl();
-        }
         #endregion
 
         #region Tab Control Components
-        private void ResizeTabControl()
-        {
-            soundPanel_tabControl.Size = new Size(this.Size.Width - 50, this.Size.Height - 70);
-        }
-
         private void panning_mouseRelease(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -355,7 +345,7 @@ namespace MaraSoundsMachine
             thisTabPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             thisTabPage.Location = new System.Drawing.Point(4, 23);
             thisTabPage.Name = "soundSource_tabPage";
-            thisTabPage.Size = new System.Drawing.Size(897, 432);
+            thisTabPage.Size = new System.Drawing.Size(608, 363);
             //thisTabPage.TabIndex = 0;
             thisTabPage.Text = "Jjaro Ship Creak";
             thisTabPage.Controls.Add(freqRand_Label);

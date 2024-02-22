@@ -79,7 +79,7 @@
             this.soundPanel_tabControl.Multiline = true;
             this.soundPanel_tabControl.Name = "soundPanel_tabControl";
             this.soundPanel_tabControl.SelectedIndex = 0;
-            this.soundPanel_tabControl.Size = new System.Drawing.Size(905, 459);
+            this.soundPanel_tabControl.Size = new System.Drawing.Size(608, 363);
             this.soundPanel_tabControl.TabIndex = 0;
             // 
             // soundSource_tabPage
@@ -115,7 +115,7 @@
             this.soundSource_tabPage.Controls.Add(this.soundSource_Enabled_checkBox);
             this.soundSource_tabPage.Location = new System.Drawing.Point(4, 23);
             this.soundSource_tabPage.Name = "soundSource_tabPage";
-            this.soundSource_tabPage.Size = new System.Drawing.Size(897, 432);
+            this.soundSource_tabPage.Size = new System.Drawing.Size(600, 336);
             this.soundSource_tabPage.TabIndex = 0;
             this.soundSource_tabPage.Text = "Jjaro Ship Creak";
             // 
@@ -465,7 +465,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::MaraSoundsMachine.Properties.Resources.m1_sounds;
-            this.ClientSize = new System.Drawing.Size(1064, 461);
+            this.ClientSize = new System.Drawing.Size(634, 411);
             this.Controls.Add(this.removeSoundSource_Button);
             this.Controls.Add(this.addSoundSource_Button);
             this.Controls.Add(this.startPlayback_Button);
@@ -474,11 +474,11 @@
             this.ForeColor = System.Drawing.Color.Lime;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MinimumSize = new System.Drawing.Size(500, 500);
+            this.MaximumSize = new System.Drawing.Size(650, 450);
+            this.MinimumSize = new System.Drawing.Size(650, 450);
             this.Name = "MainForm";
             this.Text = "Marathon Sounds Machine v0.1";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Resize += new System.EventHandler(this.MainFormResized);
             this.soundPanel_tabControl.ResumeLayout(false);
             this.soundSource_tabPage.ResumeLayout(false);
             this.soundSource_tabPage.PerformLayout();
