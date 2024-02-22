@@ -18,7 +18,6 @@ namespace MaraSoundsMachine
         // Global Variables
         public static XAudio2 yourAudiodevice = new XAudio2();
         public static MasteringVoice thisMasteringVoice = new MasteringVoice(yourAudiodevice);
-        public static bool audioBufferBusy = false;
         public static List<SoundSource> soundSourcesList = new List<SoundSource>();
         public static bool audioPlaying = false;
 
@@ -33,20 +32,7 @@ namespace MaraSoundsMachine
                 {
                     Parallel.ForEach(soundSourcesList, soundSource =>
                     {
-                        int soundIndex = soundSourcesList.IndexOf(soundSource);
-
-                        if (!soundSource.IsPlaying && soundSource.Enabled && IsSoundSampleRandom(soundSource.ThisSample))
-                        {
-                            Random randSeed = new Random();
-
-                            if (randSeed.Next(100) < soundSource.BaseFrequency)
-                            {
-                                AudioHandler.StartPlaySoundSource(soundSource);
-                                soundSource.IsPlaying = true;
-                            }
-                        }
-
-                        if (!soundSource.IsPlaying && soundSource.Enabled && !IsSoundSampleRandom(soundSource.ThisSample))
+                        if (!soundSource.AudioBufferBusy && soundSource.Enabled)
                         {
                             AudioHandler.StartPlaySoundSource(soundSource);
                             soundSource.IsPlaying = true;
@@ -97,15 +83,21 @@ namespace MaraSoundsMachine
 
             p_volume = soundSource.Volume + randVolume;
             p_pan = soundSource.Pan + randPan;
-            p_pitch = soundSource.BaseFrequency + randPitch;
+            p_pitch = soundSource.BaseFrequency + randPitch; 
 
             if (!IsSoundSampleRandom(soundSource.ThisSample))
             {
-                StartLoopingAudioSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+                if (randSeed.Next(100) < soundSource.BaseFrequency + soundSource.DeltaFrequency)
+                {
+                    StartLoopingAudioSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+                }            
             }
             else
             {
-                StartPlayWave(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+                if (randSeed.Next(100) < soundSource.BaseFrequency + soundSource.DeltaFrequency)
+                {
+                    StartPlayWave(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+                }
             }
         }
 
@@ -115,9 +107,9 @@ namespace MaraSoundsMachine
 
             while (playing)
             {
-                if (!audioBufferBusy)
+                if (!soundSource.AudioBufferBusy)
                 {
-                    audioBufferBusy = false;
+                    soundSource.AudioBufferBusy = false;
 
                     WaveName waveName = ReturnRandomWaveName(soundSource.ThisSample);
 
@@ -127,7 +119,7 @@ namespace MaraSoundsMachine
 
                     WaveFormat waveFormat = stream.Format;
 
-                    audioBufferBusy = true;
+                    soundSource.AudioBufferBusy = true;
 
                     AudioBuffer buffer = new AudioBuffer
                     {
@@ -141,7 +133,7 @@ namespace MaraSoundsMachine
                     soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
 
                     // Adds a sample callback to check that they are working on source voices
-                    soundSource.ThisVoice.BufferEnd += (context) => audioBufferBusy = false;
+                    soundSource.ThisVoice.BufferEnd += (context) => soundSource.AudioBufferBusy = false;
                     soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
 
                     soundSource.ThisVoice.SetVolume(volume);
@@ -156,7 +148,7 @@ namespace MaraSoundsMachine
 
         public static void StartPlayWave(SoundSource soundSource, float volume, float pan, float pitch)
         {
-            audioBufferBusy = false;
+            soundSource.AudioBufferBusy = false;
 
             string filePath = GetWaveFilePath(ReturnRandomWaveName(soundSource.ThisSample));
 
@@ -164,7 +156,7 @@ namespace MaraSoundsMachine
 
             WaveFormat waveFormat = stream.Format;
 
-            audioBufferBusy = true;
+            soundSource.AudioBufferBusy = true;
 
             AudioBuffer buffer = new AudioBuffer
             {
@@ -178,7 +170,7 @@ namespace MaraSoundsMachine
             soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
 
             // Adds a sample callback to check that they are working on source voices
-            soundSource.ThisVoice.BufferEnd += (context) => audioBufferBusy = false;
+            soundSource.ThisVoice.BufferEnd += (context) => soundSource.AudioBufferBusy = false;
             soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
 
             soundSource.ThisVoice.SetVolume(volume);
@@ -653,6 +645,13 @@ namespace MaraSoundsMachine
             {
                 get { return thisVoice; }
                 set { thisVoice = value; }
+            }
+
+            private bool audioBufferBusy = false;
+            public bool AudioBufferBusy
+            {
+                get { return audioBufferBusy; }
+                set { audioBufferBusy = value; }
             }
 
             private bool isPlaying = false;
