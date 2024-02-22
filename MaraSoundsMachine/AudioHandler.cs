@@ -2,6 +2,7 @@
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,9 +42,34 @@ namespace MaraSoundsMachine
                     {
                         int soundIndex = soundSourcesList.IndexOf(soundSource);
 
-                        if (!isPlayingList[soundIndex] && soundSource.Enabled)
+                        if (!isPlayingList[soundIndex] && soundSource.Enabled && IsSoundSampleRandom(soundSource.ThisSample))
                         {
                             Random randSeed = new Random();
+
+                            if (randSeed.Next(100) < soundSource.BaseFrequency)
+                            {
+                                double signA = (randSeed.Next(2) == 0) ? -1 : 1;
+                                double signB = (randSeed.Next(2) == 0) ? -1 : 1;
+                                double signC = (randSeed.Next(2) == 0) ? -1 : 1;
+
+                                double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
+                                double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
+                                double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
+
+                                double instVolume = soundSource.Volume + randVolume;
+                                double instPan = soundSource.Pan + randPan;
+                                double instPitch = soundSource.BaseFrequency + randPitch;
+
+                                AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
+                                isPlayingList[soundIndex] = true;
+                            }
+                        }
+
+                        if (!isPlayingList[soundIndex] && soundSource.Enabled && !IsSoundSampleRandom(soundSource.ThisSample))
+                        {
+
+                            Random randSeed = new Random();
+
                             double signA = (randSeed.Next(2) == 0) ? -1 : 1;
                             double signB = (randSeed.Next(2) == 0) ? -1 : 1;
                             double signC = (randSeed.Next(2) == 0) ? -1 : 1;
@@ -59,17 +85,15 @@ namespace MaraSoundsMachine
                             AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
                             isPlayingList[soundIndex] = true;
                         }
+
+                        if (!audioPlaying)
+                        {
+                            StopAudioPlayback();
+                        }
+                        System.Threading.Thread.Sleep(33);
                     });
                 }
-
-                if (!audioPlaying)
-                {
-                    StopAudioPlayback();
-                }
-
             }).Start();
-
-            System.Threading.Thread.Sleep(33);
         }
 
         public static void StartAudioPlayback()
@@ -94,8 +118,98 @@ namespace MaraSoundsMachine
             float p_volume = (float)volume;
             float p_pan = (float)pan;
             float p_pitch = (float)pitch;
-            
-            WaveName waveToPlay = WaveName.JjaroCreak0;
+
+            if (!IsSoundSampleRandom(sampleName))
+            {
+                StartLoopingAudioSource(sampleName, p_volume, p_pan, p_pitch);
+            }
+            else
+            {
+                WaveName waveToPlay = ReturnRandomWaveName(sampleName);
+                StartPlayWave(waveToPlay, p_volume, p_pan, p_pitch);
+            }
+        }
+
+        public static void StartLoopingAudioSource(SampleName sampleName, float volume, float pan, float pitch)
+        {
+            bool playing = true;
+
+            while (playing)
+            {
+                if (!audioBufferBusy)
+                {
+                    audioBufferBusy = false;
+
+                    WaveName waveName = ReturnRandomWaveName(sampleName);
+
+                    string filePath = GetWaveFilePath(waveName);
+
+                    SoundStream stream = new SoundStream(File.OpenRead(filePath));
+
+                    WaveFormat waveFormat = stream.Format;
+
+                    audioBufferBusy = true;
+
+                    AudioBuffer buffer = new AudioBuffer
+                    {
+                        Stream = stream.ToDataStream(),
+                        AudioBytes = (int)stream.Length,
+                        Flags = BufferFlags.EndOfStream
+                    };
+
+                    stream.Close();
+
+                    SourceVoice sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+
+                    // Adds a sample callback to check that they are working on source voices
+                    sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
+                    sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+
+                    sourceVoice.SetVolume(volume);
+
+                    sourceVoice.Start();
+
+                    System.Threading.Thread.Sleep(33);
+                }
+            }
+
+        }
+
+        public static void StartPlayWave(WaveName waveFile, float volume, float pan, float pitch)
+        {
+            audioBufferBusy = false;
+
+            string filePath = GetWaveFilePath(waveFile);
+
+            SoundStream stream = new SoundStream(File.OpenRead(filePath));
+
+            WaveFormat waveFormat = stream.Format;
+
+            audioBufferBusy = true;
+
+            AudioBuffer buffer = new AudioBuffer
+            {
+                Stream = stream.ToDataStream(),
+                AudioBytes = (int)stream.Length,
+                Flags = BufferFlags.EndOfStream
+            };
+
+            stream.Close();
+
+            SourceVoice sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+
+            // Adds a sample callback to check that they are working on source voices
+            sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
+            sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+
+            sourceVoice.SetVolume(volume);
+
+            sourceVoice.Start();         
+        }
+
+        public static WaveName ReturnRandomWaveName(SampleName sampleName)
+        {
+            WaveName randomWaveName = WaveName.JjaroCreak0;
             List<WaveName> waveSelectionList = new List<WaveName>();
 
             #region Random Sound Selector
@@ -224,47 +338,12 @@ namespace MaraSoundsMachine
             }
 
             // Select an element from the list at random
-            Random random = new Random();      
+            Random random = new Random();
             int randomIndex = random.Next(waveSelectionList.Count);
-            waveToPlay = waveSelectionList[randomIndex];
+            randomWaveName = waveSelectionList[randomIndex];
             #endregion
 
-            bool isLooping = false;
-
-            // Play that sample
-            StartPlayWave(waveToPlay, p_volume, p_pan, p_pitch, isLooping);
-        }
-
-        public static void StartPlayWave(WaveName waveFile, float volume, float pan, float pitch, bool isLooping)
-        {
-            audioBufferBusy = false;
-
-            string filePath = GetWaveFilePath(waveFile);
-
-            SoundStream stream = new SoundStream(File.OpenRead(filePath));
-
-            WaveFormat waveFormat = stream.Format;
-
-            audioBufferBusy = true;
-
-            AudioBuffer buffer = new AudioBuffer
-            {
-                Stream = stream.ToDataStream(),
-                AudioBytes = (int)stream.Length,
-                Flags = BufferFlags.EndOfStream
-            };
-
-            stream.Close();
-
-            var sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
-
-            // Adds a sample callback to check that they are working on source voices
-            sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
-            sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
-
-            sourceVoice.SetVolume(volume);
-
-            sourceVoice.Start();         
+            return randomWaveName;
         }
         #endregion
 
