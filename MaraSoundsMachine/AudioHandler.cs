@@ -25,13 +25,6 @@ namespace MaraSoundsMachine
         #region Stream Handling
         public static void AudioPlaybackLoop()
         {
-            List<bool> isPlayingList = new List<bool>();
-
-            Parallel.ForEach(soundSourcesList, soundSource =>
-            {
-                isPlayingList.Add(false);
-            });
-
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
@@ -42,54 +35,23 @@ namespace MaraSoundsMachine
                     {
                         int soundIndex = soundSourcesList.IndexOf(soundSource);
 
-                        if (!isPlayingList[soundIndex] && soundSource.Enabled && IsSoundSampleRandom(soundSource.ThisSample))
+                        if (!soundSource.IsPlaying && soundSource.Enabled && IsSoundSampleRandom(soundSource.ThisSample))
                         {
                             Random randSeed = new Random();
 
                             if (randSeed.Next(100) < soundSource.BaseFrequency)
                             {
-                                double signA = (randSeed.Next(2) == 0) ? -1 : 1;
-                                double signB = (randSeed.Next(2) == 0) ? -1 : 1;
-                                double signC = (randSeed.Next(2) == 0) ? -1 : 1;
-
-                                double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
-                                double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
-                                double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
-
-                                double instVolume = soundSource.Volume + randVolume;
-                                double instPan = soundSource.Pan + randPan;
-                                double instPitch = soundSource.BaseFrequency + randPitch;
-
-                                AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
-                                isPlayingList[soundIndex] = true;
+                                AudioHandler.StartPlaySoundSource(soundSource);
+                                soundSource.IsPlaying = true;
                             }
                         }
 
-                        if (!isPlayingList[soundIndex] && soundSource.Enabled && !IsSoundSampleRandom(soundSource.ThisSample))
+                        if (!soundSource.IsPlaying && soundSource.Enabled && !IsSoundSampleRandom(soundSource.ThisSample))
                         {
-
-                            Random randSeed = new Random();
-
-                            double signA = (randSeed.Next(2) == 0) ? -1 : 1;
-                            double signB = (randSeed.Next(2) == 0) ? -1 : 1;
-                            double signC = (randSeed.Next(2) == 0) ? -1 : 1;
-
-                            double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
-                            double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
-                            double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
-
-                            double instVolume = soundSource.Volume + randVolume;
-                            double instPan = soundSource.Pan + randPan;
-                            double instPitch = soundSource.BaseFrequency + randPitch;
-
-                            AudioHandler.StartPlaySample(soundSource.ThisSample, instVolume, instPan, instPitch);
-                            isPlayingList[soundIndex] = true;
+                            AudioHandler.StartPlaySoundSource(soundSource);
+                            soundSource.IsPlaying = true;
                         }
 
-                        if (!audioPlaying)
-                        {
-                            StopAudioPlayback();
-                        }
                         System.Threading.Thread.Sleep(33);
                     });
                 }
@@ -106,31 +68,48 @@ namespace MaraSoundsMachine
         public static void StopAudioPlayback()
         {
             // Stop sound
-            //sourceVoice.DestroyVoice();
-            //sourceVoice.Dispose();
-            //buffer.Stream.Dispose();
+            foreach (SoundSource soundSource in soundSourcesList)
+            {
+                soundSource.ThisVoice.DestroyVoice();
+                soundSource.ThisVoice.Dispose();
+            }
+
+            soundSourcesList.Clear();
 
             audioPlaying = false;
         }
 
-        public static void StartPlaySample(SampleName sampleName, double volume, double pan, double pitch)
+        public static void StartPlaySoundSource(SoundSource soundSource)
         {
-            float p_volume = (float)volume;
-            float p_pan = (float)pan;
-            float p_pitch = (float)pitch;
+            double p_volume = soundSource.Volume;
+            double p_pan = soundSource.Pan;
+            double p_pitch = soundSource.BaseFrequency;
 
-            if (!IsSoundSampleRandom(sampleName))
+            Random randSeed = new Random();
+
+            double signA = (randSeed.Next(2) == 0) ? -1 : 1;
+            double signB = (randSeed.Next(2) == 0) ? -1 : 1;
+            double signC = (randSeed.Next(2) == 0) ? -1 : 1;
+
+            double randVolume = (randSeed.NextDouble() * soundSource.DeltaVolume) * signA;
+            double randPan = (randSeed.NextDouble() * soundSource.DeltaPan) * signB;
+            double randPitch = (randSeed.NextDouble() * soundSource.DeltaFrequency) * signC;
+
+            p_volume = soundSource.Volume + randVolume;
+            p_pan = soundSource.Pan + randPan;
+            p_pitch = soundSource.BaseFrequency + randPitch;
+
+            if (!IsSoundSampleRandom(soundSource.ThisSample))
             {
-                StartLoopingAudioSource(sampleName, p_volume, p_pan, p_pitch);
+                StartLoopingAudioSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
             }
             else
             {
-                WaveName waveToPlay = ReturnRandomWaveName(sampleName);
-                StartPlayWave(waveToPlay, p_volume, p_pan, p_pitch);
+                StartPlayWave(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
             }
         }
 
-        public static void StartLoopingAudioSource(SampleName sampleName, float volume, float pan, float pitch)
+        public static void StartLoopingAudioSource(SoundSource soundSource, float volume, float pan, float pitch)
         {
             bool playing = true;
 
@@ -140,7 +119,7 @@ namespace MaraSoundsMachine
                 {
                     audioBufferBusy = false;
 
-                    WaveName waveName = ReturnRandomWaveName(sampleName);
+                    WaveName waveName = ReturnRandomWaveName(soundSource.ThisSample);
 
                     string filePath = GetWaveFilePath(waveName);
 
@@ -159,27 +138,27 @@ namespace MaraSoundsMachine
 
                     stream.Close();
 
-                    SourceVoice sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+                    soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
 
                     // Adds a sample callback to check that they are working on source voices
-                    sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
-                    sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+                    soundSource.ThisVoice.BufferEnd += (context) => audioBufferBusy = false;
+                    soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
 
-                    sourceVoice.SetVolume(volume);
+                    soundSource.ThisVoice.SetVolume(volume);
 
-                    sourceVoice.Start();
+                    soundSource.ThisVoice.Start();
 
-                    System.Threading.Thread.Sleep(33);
+                    buffer.Stream.Dispose();
                 }
             }
 
         }
 
-        public static void StartPlayWave(WaveName waveFile, float volume, float pan, float pitch)
+        public static void StartPlayWave(SoundSource soundSource, float volume, float pan, float pitch)
         {
             audioBufferBusy = false;
 
-            string filePath = GetWaveFilePath(waveFile);
+            string filePath = GetWaveFilePath(ReturnRandomWaveName(soundSource.ThisSample));
 
             SoundStream stream = new SoundStream(File.OpenRead(filePath));
 
@@ -196,15 +175,17 @@ namespace MaraSoundsMachine
 
             stream.Close();
 
-            SourceVoice sourceVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+            soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
 
             // Adds a sample callback to check that they are working on source voices
-            sourceVoice.BufferEnd += (context) => audioBufferBusy = false;
-            sourceVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+            soundSource.ThisVoice.BufferEnd += (context) => audioBufferBusy = false;
+            soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
 
-            sourceVoice.SetVolume(volume);
+            soundSource.ThisVoice.SetVolume(volume);
 
-            sourceVoice.Start();         
+            soundSource.ThisVoice.Start();
+
+            buffer.Stream.Dispose();
         }
 
         public static WaveName ReturnRandomWaveName(SampleName sampleName)
@@ -665,6 +646,20 @@ namespace MaraSoundsMachine
             {
                 get { return thisSample; }
                 set { thisSample = value; }
+            }
+
+            private SourceVoice thisVoice = null;
+            public SourceVoice ThisVoice
+            {
+                get { return thisVoice; }
+                set { thisVoice = value; }
+            }
+
+            private bool isPlaying = false;
+            public bool IsPlaying
+            {
+                get { return isPlaying; }
+                set { isPlaying = value; }
             }
 
             private bool enabled = false;

@@ -404,6 +404,7 @@ namespace MaraSoundsMachine
             if (soundPanel_tabControl.TabPages.Count > 1)
             {
                 soundPanel_tabControl.TabPages.RemoveAt(soundPanel_tabControl.TabPages.Count - 1);
+                AudioHandler.StopAudioPlayback();
                 AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
             }
         }
