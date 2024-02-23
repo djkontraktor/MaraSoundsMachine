@@ -478,7 +478,6 @@
             this.MinimumSize = new System.Drawing.Size(650, 450);
             this.Name = "MainForm";
             this.Text = "Marathon Sounds Machine v0.1";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.soundPanel_tabControl.ResumeLayout(false);
             this.soundSource_tabPage.ResumeLayout(false);
             this.soundSource_tabPage.PerformLayout();

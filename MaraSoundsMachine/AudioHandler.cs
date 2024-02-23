@@ -21,7 +21,7 @@ namespace MaraSoundsMachine
         public static List<SoundSource> soundSourcesList = new List<SoundSource>();
         public static bool uiPlaybackEnabled = false;
 
-        #region Stream Handling
+        #region Start/Stop Playback
         public static void StartAudioPlayback()
         {
             uiPlaybackEnabled = true;
@@ -37,7 +37,8 @@ namespace MaraSoundsMachine
 
         public static void StopAudioPlayback()
         {
-            // Stop sound
+            uiPlaybackEnabled = false;
+
             foreach (SoundSource soundSource in soundSourcesList)
             {
                 soundSource.IsPlaying = false;
@@ -45,10 +46,10 @@ namespace MaraSoundsMachine
                 soundSource.ThisVoice.DestroyVoice();
                 soundSource.ThisVoice.Dispose();
             }
-
-            uiPlaybackEnabled = false;
         }
+        #endregion
 
+        #region Playback Handling
         public static void StartPlaySoundSource(SoundSource soundSource)
         {
             double p_volume = soundSource.Volume;
@@ -71,7 +72,7 @@ namespace MaraSoundsMachine
             p_pan = soundSource.Pan + randPan;
             p_pitch = soundSource.BaseFrequency + randPitch; 
 
-            if (!IsSoundSampleRandom(soundSource.ThisSample))
+            if (!PathMgt.IsSoundSampleRandom(soundSource.ThisSample))
             {
                 new Thread(() =>
                 {
@@ -91,7 +92,7 @@ namespace MaraSoundsMachine
 
                 }).Start();
             }
-        }
+        }   
 
         public static void StartAmbientSoundSource(SoundSource soundSource, float volume, float pan, float pitch)
         {
@@ -100,14 +101,14 @@ namespace MaraSoundsMachine
 
             // Load wav files into memory first
             List<string> wavePaths = new List<string>();
-            List<WaveName> waveList = ListAllWaveNames(soundSource.ThisSample);
+            List<Enums.WaveName> waveList = PathMgt.ListAllWaveNames(soundSource.ThisSample);
             List<SoundStream> soundStreamList = new List<SoundStream>();
             List<WaveFormat> waveFormatList = new List<WaveFormat>();
             List<AudioBuffer> audioBufferList = new List<AudioBuffer>();
 
-            foreach (WaveName waveName in waveList)
+            foreach (Enums.WaveName waveName in waveList)
             {
-                wavePaths.Add(GetWaveFilePath(waveName));
+                wavePaths.Add(PathMgt.GetWaveFilePath(waveName));
             }
 
             foreach (string wavePath in wavePaths)
@@ -159,14 +160,14 @@ namespace MaraSoundsMachine
 
             // Load wav files into memory first
             List<string> wavePaths = new List<string>();
-            List<WaveName> waveList = ListAllWaveNames(soundSource.ThisSample);
+            List<Enums.WaveName> waveList = PathMgt.ListAllWaveNames(soundSource.ThisSample);
             List<SoundStream> soundStreamList = new List<SoundStream>();
             List<WaveFormat> waveFormatList = new List<WaveFormat>();
             List<AudioBuffer> audioBufferList = new List<AudioBuffer>();
 
-            foreach (WaveName waveName in waveList)
+            foreach (Enums.WaveName waveName in waveList)
             {
-                wavePaths.Add(GetWaveFilePath(waveName));
+                wavePaths.Add(PathMgt.GetWaveFilePath(waveName));
             }
 
             foreach (string wavePath in wavePaths)
@@ -209,643 +210,6 @@ namespace MaraSoundsMachine
 
                 System.Threading.Thread.Sleep(33);
             }
-        }
-        #endregion
-
-        #region Path Handling
-        public static string GetWaveFilePath(WaveName waveName)
-        {
-            string fileShortName = "";
-
-            switch (waveName)
-            {
-                case WaveName.JjaroCreak0:
-                    fileShortName = "4 Creak 0";
-                    break;
-                case WaveName.JjaroCreak1:
-                    fileShortName = "4 Creak 1";
-                    break;
-                case WaveName.Loon0:
-                    fileShortName = "29 Loon 0";
-                    break;
-                case WaveName.Loon1:
-                    fileShortName = "29 Loon 1";
-                    break;
-                case WaveName.Loon2:
-                    fileShortName = "29 Loon 2";
-                    break;
-                case WaveName.Water0:
-                    fileShortName = "90 Water 0";
-                    break;
-                case WaveName.Water1:
-                    fileShortName = "90 Water 1";
-                    break;
-                case WaveName.Water2:
-                    fileShortName = "90 Water 2";
-                    break;
-                case WaveName.Sewage0:
-                    fileShortName = "91 Sewage 0";
-                    break;
-                case WaveName.Sewage1:
-                    fileShortName = "91 Sewage 1";
-                    break;
-                case WaveName.Sewage2:
-                    fileShortName = "91 Sewage 2";
-                    break;
-                case WaveName.Lava0:
-                    fileShortName = "92 Lava 0";
-                    break;
-                case WaveName.Lava1:
-                    fileShortName = "92 Lava 1";
-                    break;
-                case WaveName.Lava2:
-                    fileShortName = "92 Lava 2";
-                    break;
-                case WaveName.Goo0:
-                    fileShortName = "93 Goo 0";
-                    break;
-                case WaveName.Goo1:
-                    fileShortName = "93 Goo 1";
-                    break;
-                case WaveName.Goo2:
-                    fileShortName = "93 Goo 2";
-                    break;
-                case WaveName.UnderStuff:
-                    fileShortName = "94 Under Stuff";
-                    break;
-                case WaveName.Wind0:
-                    fileShortName = "95 Wind 0";
-                    break;
-                case WaveName.Wind1:
-                    fileShortName = "95 Wind 1";
-                    break;
-                case WaveName.Wind2:
-                    fileShortName = "95 Wind 2";
-                    break;
-                case WaveName.Wind3:
-                    fileShortName = "95 Wind 3";
-                    break;
-                case WaveName.Waterfall0:
-                    fileShortName = "96 Waterfall 0";
-                    break;
-                case WaveName.Waterfall1:
-                    fileShortName = "96 Waterfall 1";
-                    break;
-                case WaveName.Siren:
-                    fileShortName = "97 Siren";
-                    break;
-                case WaveName.Fan:
-                    fileShortName = "98 Fan";
-                    break;
-                case WaveName.SphtPlatform:
-                    fileShortName = "100 Spht Platform";
-                    break;
-                case WaveName.AlienHarmonics0:
-                    fileShortName = "101 Alien Harmonics 0";
-                    break;
-                case WaveName.AlienHarmonics1:
-                    fileShortName = "101 Alien Harmonics 1";
-                    break;
-                case WaveName.HeavySphtPlatform:
-                    fileShortName = "102 Heavy Spht Platform";
-                    break;
-                case WaveName.LightMachinery:
-                    fileShortName = "103 Light Machinery";
-                    break;
-                case WaveName.HeavyMachinery:
-                    fileShortName = "104 Heavy Machinery";
-                    break;
-                case WaveName.Transformer:
-                    fileShortName = "105 Transformer";
-                    break;
-                case WaveName.SparkingTransformer0:
-                    fileShortName = "106 Sparking Transformer 0";
-                    break;
-                case WaveName.SparkingTransformer1:
-                    fileShortName = "106 Sparking Transformer 1";
-                    break;
-                case WaveName.SparkingTransformer2:
-                    fileShortName = "106 Sparking Transformer 2";
-                    break;
-                case WaveName.WaterDrip0:
-                    fileShortName = "107 Water Drip 0";
-                    break;
-                case WaveName.WaterDrip1:
-                    fileShortName = "107 Water Drip 1";
-                    break;
-                case WaveName.WaterDrip2:
-                    fileShortName = "107 Water Drip 2";
-                    break;
-                case WaveName.WaterDrip3:
-                    fileShortName = "107 Water Drip 3";
-                    break;
-                case WaveName.MachineBinder:
-                    fileShortName = "169 Machine Binder";
-                    break;
-                case WaveName.MachineBookpress:
-                    fileShortName = "170 Machine Bookpress";
-                    break;
-                case WaveName.MachinePuncher:
-                    fileShortName = "171 Machine Puncher";
-                    break;
-                case WaveName.Electric:
-                    fileShortName = "172 Electric";
-                    break;
-                case WaveName.Alarm:
-                    fileShortName = "173 Alarm";
-                    break;
-                case WaveName.NightWind0:
-                    fileShortName = "174 Night Wind 0";
-                    break;
-                case WaveName.NightWind1:
-                    fileShortName = "174 Night Wind 1";
-                    break;
-                case WaveName.NightWind2:
-                    fileShortName = "174 Night Wind 2";
-                    break;
-                case WaveName.SurfaceExplosion0:
-                    fileShortName = "175 Surface Explosion 0";
-                    break;
-                case WaveName.SurfaceExplosion1:
-                    fileShortName = "175 Surface Explosion 1";
-                    break;
-                case WaveName.SurfaceExplosion2:
-                    fileShortName = "175 Surface Explosion 2";
-                    break;
-                case WaveName.UndergroundExplosion:
-                    fileShortName = "176 Underground Explosion";
-                    break;
-                case WaveName.PfhorPlatform:
-                    fileShortName = "189 Pfhor Platform";
-                    break;
-                case WaveName.PfhorDoor:
-                    fileShortName = "193 Pfhor Door";
-                    break;
-                case WaveName.AlienNoise1_0:
-                    fileShortName = "201 Alien Noise 1 0";
-                    break;
-                case WaveName.AlienNoise1_1:
-                    fileShortName = "201 Alien Noise 1 1";
-                    break;
-                case WaveName.AlienNoise2_0:
-                    fileShortName = "202 Alien Noise 2 0";
-                    break;
-                case WaveName.AlienNoise2_1:
-                    fileShortName = "202 Alien Noise 2 1";
-                    break;
-            }
-
-            string filePath = string.Format("{0}Resources\\" + fileShortName + ".wav", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\")));
-
-            return filePath;
-        }
-
-        public static List<WaveName> ListAllWaveNames(SampleName sampleName)
-        {
-            List<WaveName> waveList = new List<WaveName>();
-
-            #region Wave Selector
-            switch (sampleName)
-            {
-                case SampleName.JjaroCreak:
-                    waveList.Add(WaveName.JjaroCreak0);
-                    waveList.Add(WaveName.JjaroCreak1);
-                    break;
-                case SampleName.Loon:
-                    waveList.Add(WaveName.Loon0);
-                    waveList.Add(WaveName.Loon1);
-                    waveList.Add(WaveName.Loon2);
-                    break;
-                case SampleName.Water:
-                    waveList.Add(WaveName.Water0);
-                    waveList.Add(WaveName.Water1);
-                    waveList.Add(WaveName.Water2);
-                    break;
-                case SampleName.Sewage:
-                    waveList.Add(WaveName.Sewage0);
-                    waveList.Add(WaveName.Sewage1);
-                    waveList.Add(WaveName.Sewage2);
-                    break;
-                case SampleName.Lava:
-                    waveList.Add(WaveName.Lava0);
-                    waveList.Add(WaveName.Lava1);
-                    waveList.Add(WaveName.Lava2);
-                    break;
-                case SampleName.Goo:
-                    waveList.Add(WaveName.Goo0);
-                    waveList.Add(WaveName.Goo1);
-                    waveList.Add(WaveName.Goo2);
-                    break;
-                case SampleName.UnderStuff:
-                    waveList.Add(WaveName.UnderStuff);
-                    break;
-                case SampleName.Wind:
-                    waveList.Add(WaveName.Wind0);
-                    waveList.Add(WaveName.Wind1);
-                    waveList.Add(WaveName.Wind2);
-                    waveList.Add(WaveName.Wind3);
-                    break;
-                case SampleName.Waterfall:
-                    waveList.Add(WaveName.Waterfall0);
-                    waveList.Add(WaveName.Waterfall1);
-                    break;
-                case SampleName.Siren:
-                    waveList.Add(WaveName.Siren);
-                    break;
-                case SampleName.Fan:
-                    waveList.Add(WaveName.Fan);
-                    break;
-                case SampleName.SphtPlatform:
-                    waveList.Add(WaveName.SphtPlatform);
-                    break;
-                case SampleName.AlienHarmonics:
-                    waveList.Add(WaveName.AlienHarmonics0);
-                    waveList.Add(WaveName.AlienHarmonics1);
-                    break;
-                case SampleName.HeavySphtPlatform:
-                    waveList.Add(WaveName.HeavySphtPlatform);
-                    break;
-                case SampleName.LightMachinery:
-                    waveList.Add(WaveName.LightMachinery);
-                    break;
-                case SampleName.HeavyMachinery:
-                    waveList.Add(WaveName.HeavyMachinery);
-                    break;
-                case SampleName.Transformer:
-                    waveList.Add(WaveName.Transformer);
-                    break;
-                case SampleName.SparkingTransformer:
-                    waveList.Add(WaveName.SparkingTransformer0);
-                    waveList.Add(WaveName.SparkingTransformer1);
-                    waveList.Add(WaveName.SparkingTransformer2);
-                    break;
-                case SampleName.WaterDrip:
-                    waveList.Add(WaveName.WaterDrip0);
-                    waveList.Add(WaveName.WaterDrip1);
-                    waveList.Add(WaveName.WaterDrip2);
-                    waveList.Add(WaveName.WaterDrip3);
-                    break;
-                case SampleName.MachineBinder:
-                    waveList.Add(WaveName.MachineBinder);
-                    break;
-                case SampleName.MachineBookpress:
-                    waveList.Add(WaveName.MachineBookpress);
-                    break;
-                case SampleName.MachinePuncher:
-                    waveList.Add(WaveName.MachinePuncher);
-                    break;
-                case SampleName.Electric:
-                    waveList.Add(WaveName.Electric);
-                    break;
-                case SampleName.Alarm:
-                    waveList.Add(WaveName.Alarm);
-                    break;
-                case SampleName.NightWind:
-                    waveList.Add(WaveName.NightWind0);
-                    waveList.Add(WaveName.NightWind1);
-                    waveList.Add(WaveName.NightWind2);
-                    break;
-                case SampleName.SurfaceExplosion:
-                    waveList.Add(WaveName.SurfaceExplosion0);
-                    waveList.Add(WaveName.SurfaceExplosion1);
-                    waveList.Add(WaveName.SurfaceExplosion2);
-                    break;
-                case SampleName.UndergroundExplosion:
-                    waveList.Add(WaveName.UndergroundExplosion);
-                    break;
-                case SampleName.PfhorPlatform:
-                    waveList.Add(WaveName.PfhorPlatform);
-                    break;
-                case SampleName.PfhorDoor:
-                    waveList.Add(WaveName.PfhorDoor);
-                    break;
-                case SampleName.AlienNoise1:
-                    waveList.Add(WaveName.AlienNoise1_0);
-                    waveList.Add(WaveName.AlienNoise1_1);
-                    break;
-                case SampleName.AlienNoise2:
-                    waveList.Add(WaveName.AlienNoise2_0);
-                    waveList.Add(WaveName.AlienNoise2_1);
-                    break;
-            }
-            #endregion
-
-            return waveList;
-        }
-
-        public static string ReturnEnglishSampleName(SampleName sampleName)
-        {
-            string englishName = "";
-
-            switch (sampleName)
-            {
-                case AudioHandler.SampleName.JjaroCreak:
-                    englishName = "Jjaro Ship Creak";
-                    break;
-                case AudioHandler.SampleName.Loon:
-                    englishName = "Loon";
-                    break;
-                case AudioHandler.SampleName.Water:
-                    englishName = "Water";
-                    break;
-                case AudioHandler.SampleName.Sewage:
-                    englishName = "Sewage";
-                    break;
-                case AudioHandler.SampleName.Lava:
-                    englishName = "Lava";
-                    break;
-                case AudioHandler.SampleName.Goo:
-                    englishName = "Goo";
-                    break;
-                case AudioHandler.SampleName.UnderStuff:
-                    englishName = "Under Media";
-                    break;
-                case AudioHandler.SampleName.Wind:
-                    englishName = "Wind";
-                    break;
-                case AudioHandler.SampleName.Waterfall:
-                    englishName = "Waterfall";
-                    break;
-                case AudioHandler.SampleName.Siren:
-                    englishName = "Siren";
-                    break;
-                case AudioHandler.SampleName.Fan:
-                    englishName = "Fan";
-                    break;
-                case AudioHandler.SampleName.SphtPlatform:
-                    englishName = "S\'pht Platform";
-                    break;
-                case AudioHandler.SampleName.AlienHarmonics:
-                    englishName = "Alien Harmonics";
-                    break;
-                case AudioHandler.SampleName.HeavySphtPlatform:
-                    englishName = "Heavy S\'pht Platform";
-                    break;
-                case AudioHandler.SampleName.LightMachinery:
-                    englishName = "Light Machinery";
-                    break;
-                case AudioHandler.SampleName.HeavyMachinery:
-                    englishName = "Heavy Machinery";
-                    break;
-                case AudioHandler.SampleName.Transformer:
-                    englishName = "Transformer";
-                    break;
-                case AudioHandler.SampleName.SparkingTransformer:
-                    englishName = "Sparking Transformer";
-                    break;
-                case AudioHandler.SampleName.WaterDrip:
-                    englishName = "Water Drip";
-                    break;
-                case AudioHandler.SampleName.MachineBinder:
-                    englishName = "Machine Binder";
-                    break;
-                case AudioHandler.SampleName.MachineBookpress:
-                    englishName = "Machine Bookpress";
-                    break;
-                case AudioHandler.SampleName.MachinePuncher:
-                    englishName = "Machine Puncher";
-                    break;
-                case AudioHandler.SampleName.Electric:
-                    englishName = "Electric";
-                    break;
-                case AudioHandler.SampleName.Alarm:
-                    englishName = "Alarm";
-                    break;
-                case AudioHandler.SampleName.NightWind:
-                    englishName = "Night Wind";
-                    break;
-                case AudioHandler.SampleName.SurfaceExplosion:
-                    englishName = "Surface Explosion";
-                    break;
-                case AudioHandler.SampleName.UndergroundExplosion:
-                    englishName = "Underground Explosion";
-                    break;
-                case AudioHandler.SampleName.PfhorPlatform:
-                    englishName = "Pfhor Platform";
-                    break;
-                case AudioHandler.SampleName.PfhorDoor:
-                    englishName = "Pfhor Door";
-                    break;
-                case AudioHandler.SampleName.AlienNoise1:
-                    englishName = "Alien Ship 1";
-                    break;
-                case AudioHandler.SampleName.AlienNoise2:
-                    englishName = "Alien Ship 2";
-                    break;
-            }
-            return englishName;
-        }
-
-        public static bool IsSoundSampleRandom(SampleName sampleName)
-        {
-            bool isRandom = false;
-
-            switch (sampleName)
-            {
-                case SampleName.JjaroCreak:
-                case SampleName.Loon:
-                case SampleName.WaterDrip:
-                case SampleName.SurfaceExplosion:
-                case SampleName.UndergroundExplosion:
-                    isRandom = true;
-                    break;
-            }
-
-            return isRandom;
-        }
-
-        public static WaveName ReturnRandomWaveName(SampleName sampleName)
-        {
-            WaveName randomWaveName = WaveName.JjaroCreak0;
-            List<WaveName> waveSelectionList = ListAllWaveNames(sampleName);
-
-            // Select an element from the list at random
-            Random random = new Random();
-            int randomIndex = random.Next(0, waveSelectionList.Count);
-            randomWaveName = waveSelectionList[randomIndex];
-
-            return randomWaveName;
-        }
-        #endregion
-
-        #region Classes
-        public class SoundSource
-        {
-            private SampleName thisSample = SampleName.JjaroCreak;
-            public SampleName ThisSample
-            {
-                get { return thisSample; }
-                set { thisSample = value; }
-            }
-
-            private SourceVoice thisVoice = null;
-            public SourceVoice ThisVoice
-            {
-                get { return thisVoice; }
-                set { thisVoice = value; }
-            }
-
-            private bool audioBufferBusy = false;
-            public bool AudioBufferBusy
-            {
-                get { return audioBufferBusy; }
-                set { audioBufferBusy = value; }
-            }
-
-            private bool isPlaying = false;
-            public bool IsPlaying
-            {
-                get { return isPlaying; }
-                set { isPlaying = value; }
-            }
-
-            private bool enabled = false;
-            public bool Enabled
-            {
-                get { return enabled; }
-                set { enabled = value; }
-            }
-
-            private double volume = 1;
-            public double Volume
-            {
-                get { return volume; }
-                set { volume = value; }
-            }
-
-            private double pan = 0;
-            public double Pan
-            {
-                get { return pan; }
-                set { pan = value; }
-            }
-
-            private double baseFrequency = 1;
-            public double BaseFrequency
-            {
-                get { return baseFrequency; }
-                set { baseFrequency = value; }
-            }
-
-            private double deltaPan = 0;
-            public double DeltaPan
-            {
-                get { return deltaPan; }
-                set { deltaPan = value; }
-            }
-
-            private double deltaVolume = 0;
-            public double DeltaVolume
-            {
-                get { return deltaVolume; }
-                set { deltaVolume = value; }
-            }
-
-            private double deltaFrequency = 0;
-            public double DeltaFrequency
-            {
-                get { return deltaFrequency; }
-                set { deltaFrequency = value; }
-            }
-        }
-        #endregion
-
-        #region Enums
-        public enum WaveName
-        {
-            JjaroCreak0,
-            JjaroCreak1,
-            Loon0,
-            Loon1,
-            Loon2,
-            Water0,
-            Water1,
-            Water2,
-            Sewage0,
-            Sewage1,
-            Sewage2,
-            Lava0,
-            Lava1,
-            Lava2,
-            Goo0,
-            Goo1,
-            Goo2,
-            UnderStuff,
-            Wind0,
-            Wind1,
-            Wind2,
-            Wind3,
-            Waterfall0,
-            Waterfall1,
-            Siren,
-            Fan,
-            SphtPlatform,
-            AlienHarmonics0,
-            AlienHarmonics1,
-            HeavySphtPlatform,
-            LightMachinery,
-            HeavyMachinery,
-            Transformer,
-            SparkingTransformer0,
-            SparkingTransformer1,
-            SparkingTransformer2,
-            WaterDrip0,
-            WaterDrip1,
-            WaterDrip2,
-            WaterDrip3,
-            MachineBinder,
-            MachineBookpress,
-            MachinePuncher,
-            Electric,
-            Alarm,
-            NightWind0,
-            NightWind1,
-            NightWind2,
-            SurfaceExplosion0,
-            SurfaceExplosion1,
-            SurfaceExplosion2,
-            UndergroundExplosion,
-            PfhorPlatform,
-            PfhorDoor,
-            AlienNoise1_0,
-            AlienNoise1_1,
-            AlienNoise2_0,
-            AlienNoise2_1
-        }
-
-        public enum SampleName
-        {
-            JjaroCreak,
-            Loon,
-            Water,
-            Sewage,
-            Lava,
-            Goo,
-            UnderStuff,
-            Wind,
-            Waterfall,
-            Siren,
-            Fan,
-            SphtPlatform,
-            AlienHarmonics,
-            HeavySphtPlatform,
-            LightMachinery,
-            HeavyMachinery,
-            Transformer,
-            SparkingTransformer,
-            WaterDrip,
-            MachineBinder,
-            MachineBookpress,
-            MachinePuncher,
-            Electric,
-            Alarm,
-            NightWind,
-            SurfaceExplosion,
-            UndergroundExplosion,
-            PfhorPlatform,
-            PfhorDoor,
-            AlienNoise1,
-            AlienNoise2
         }
         #endregion
     }

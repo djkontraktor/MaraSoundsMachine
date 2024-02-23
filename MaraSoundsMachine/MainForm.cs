@@ -14,22 +14,15 @@ using SharpDX.XAudio2;
 
 namespace MaraSoundsMachine
 {
-
     public partial class MainForm : Form
     {
-
         #region Main Form Components
         public MainForm()
         {
             InitializeComponent();
 
-            AudioHandler.SoundSource defaultSoundSource = new AudioHandler.SoundSource();
+            SoundSource defaultSoundSource = new SoundSource();
             AudioHandler.soundSourcesList.Add(defaultSoundSource);
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
         }
         #endregion
 
@@ -384,7 +377,7 @@ namespace MaraSoundsMachine
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
             soundPanel_tabControl.TabPages.Add(ReturnDefaultTabPage());
-            AudioHandler.SoundSource newSoundSource = new AudioHandler.SoundSource();
+            SoundSource newSoundSource = new SoundSource();
             AudioHandler.soundSourcesList.Add(newSoundSource);
         }
 
@@ -424,7 +417,7 @@ namespace MaraSoundsMachine
 
             string englishSampleName = thisComboBox.Text;
 
-            AudioHandler.soundSourcesList[currentTab].ThisSample = ReturnSampleNameFromEnglishString(englishSampleName);
+            AudioHandler.soundSourcesList[currentTab].ThisSample = PathMgt.ReturnSampleNameFromEnglishString(englishSampleName);
 
             this.soundPanel_tabControl.TabPages[currentTab].Text = englishSampleName;
         }
@@ -483,112 +476,6 @@ namespace MaraSoundsMachine
             TrackBar freqRandomnessTrackBar = (TrackBar)sender;
 
             AudioHandler.soundSourcesList[currentTab].DeltaFrequency = (double)(freqRandomnessTrackBar.Value) / 50;
-        }
-        #endregion
-
-        #region Helper Methods
-        private AudioHandler.SampleName ReturnSampleNameFromEnglishString(string englishName)
-        {
-            AudioHandler.SampleName thisSampleName = AudioHandler.SampleName.JjaroCreak;
-
-            switch (englishName)
-            {
-                case "Jjaro Ship Creak":
-                    thisSampleName = AudioHandler.SampleName.JjaroCreak;
-                    break;
-                case "Loon":
-                    thisSampleName = AudioHandler.SampleName.Loon;
-                    break;
-                case "Water":
-                    thisSampleName = AudioHandler.SampleName.Water;
-                    break;
-                case "Sewage":
-                    thisSampleName = AudioHandler.SampleName.Sewage;
-                    break;
-                case "Lava":
-                    thisSampleName = AudioHandler.SampleName.Lava;
-                    break;
-                case "Goo":
-                    thisSampleName = AudioHandler.SampleName.Goo;
-                    break;
-                case "Under Media":
-                    thisSampleName = AudioHandler.SampleName.UnderStuff;
-                    break;
-                case "Wind":
-                    thisSampleName = AudioHandler.SampleName.Wind;
-                    break;
-                case "Waterfall":
-                    thisSampleName = AudioHandler.SampleName.Waterfall;
-                    break;
-                case "Siren":
-                    thisSampleName = AudioHandler.SampleName.Siren;
-                    break;
-                case "Fan":
-                    thisSampleName = AudioHandler.SampleName.Fan;
-                    break;
-                case "S\'pht Platform":
-                    thisSampleName = AudioHandler.SampleName.SphtPlatform;
-                    break;
-                case "Alien Harmonics":
-                    thisSampleName = AudioHandler.SampleName.AlienHarmonics;
-                    break;
-                case "Heavy S\'pht Platform":
-                    thisSampleName = AudioHandler.SampleName.HeavySphtPlatform;
-                    break;
-                case "Light Machinery":
-                    thisSampleName = AudioHandler.SampleName.LightMachinery;
-                    break;
-                case "Heavy Machinery":
-                    thisSampleName = AudioHandler.SampleName.HeavyMachinery;
-                    break;
-                case "Transformer":
-                    thisSampleName = AudioHandler.SampleName.Transformer;
-                    break;
-                case "Sparking Transformer":
-                    thisSampleName = AudioHandler.SampleName.SparkingTransformer;
-                    break;
-                case "Water Drip":
-                    thisSampleName = AudioHandler.SampleName.WaterDrip;
-                    break;
-                case "Machine Binder":
-                    thisSampleName = AudioHandler.SampleName.MachineBinder;
-                    break;
-                case "Machine Bookpress":
-                    thisSampleName = AudioHandler.SampleName.MachineBookpress;
-                    break;
-                case "Machine Puncher":
-                    thisSampleName = AudioHandler.SampleName.MachinePuncher;
-                    break;
-                case "Electric":
-                    thisSampleName = AudioHandler.SampleName.Electric;
-                    break;
-                case "Alarm":
-                    thisSampleName = AudioHandler.SampleName.Alarm;
-                    break;
-                case "Night Wind":
-                    thisSampleName = AudioHandler.SampleName.NightWind;
-                    break;
-                case "Surface Explosion":
-                    thisSampleName = AudioHandler.SampleName.SurfaceExplosion;
-                    break;
-                case "Underground Explosion":
-                    thisSampleName = AudioHandler.SampleName.UndergroundExplosion;
-                    break;
-                case "Pfhor Platform":
-                    thisSampleName = AudioHandler.SampleName.PfhorPlatform;
-                    break;
-                case "Pfhor Door":
-                    thisSampleName = AudioHandler.SampleName.PfhorDoor;
-                    break;
-                case "Alien Ship 1":
-                    thisSampleName = AudioHandler.SampleName.AlienNoise1;
-                    break;
-                case "Alien Ship 2":
-                    thisSampleName = AudioHandler.SampleName.AlienNoise2;
-                    break;
-            }
-
-            return thisSampleName;
         }
         #endregion
     }

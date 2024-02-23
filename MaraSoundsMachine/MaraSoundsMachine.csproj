@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioHandler.cs" />
+    <Compile Include="PathMgt.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="SoundSource.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
