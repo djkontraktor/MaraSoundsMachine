@@ -19,27 +19,20 @@ namespace MaraSoundsMachine
         public static XAudio2 yourAudiodevice = new XAudio2();
         public static MasteringVoice thisMasteringVoice = new MasteringVoice(yourAudiodevice);
         public static List<SoundSource> soundSourcesList = new List<SoundSource>();
-        public static bool audioPlaying = false;
+        public static bool uiPlaybackEnabled = false;
 
         #region Stream Handling
         public static void StartAudioPlayback()
         {
-            audioPlaying = true;
+            uiPlaybackEnabled = true;
 
-            new Thread(() =>
+            foreach (SoundSource soundSource in soundSourcesList)
             {
-                Thread.CurrentThread.IsBackground = true;
-
-                Parallel.ForEach(soundSourcesList, soundSource =>
+                if (soundSource.Enabled && uiPlaybackEnabled)
                 {
-                    if (!soundSource.AudioBufferBusy && soundSource.Enabled && audioPlaying)
-                    {
-                        AudioHandler.StartPlaySoundSource(soundSource);
-                        soundSource.IsPlaying = true;
-                    }
-                });
-
-            }).Start();
+                    AudioHandler.StartPlaySoundSource(soundSource);
+                }
+            }
         }
 
         public static void StopAudioPlayback()
@@ -47,12 +40,13 @@ namespace MaraSoundsMachine
             // Stop sound
             foreach (SoundSource soundSource in soundSourcesList)
             {
+                soundSource.IsPlaying = false;
                 soundSource.ThisVoice.Stop();
                 soundSource.ThisVoice.DestroyVoice();
                 soundSource.ThisVoice.Dispose();
             }
 
-            audioPlaying = false;
+            uiPlaybackEnabled = false;
         }
 
         public static void StartPlaySoundSource(SoundSource soundSource)
@@ -60,6 +54,8 @@ namespace MaraSoundsMachine
             double p_volume = soundSource.Volume;
             double p_pan = soundSource.Pan;
             double p_pitch = soundSource.BaseFrequency;
+
+            soundSource.IsPlaying = true;
 
             Random randSeed = new Random();
 
@@ -76,55 +72,79 @@ namespace MaraSoundsMachine
             p_pitch = soundSource.BaseFrequency + randPitch; 
 
             if (!IsSoundSampleRandom(soundSource.ThisSample))
-            {         
-                StartAmbientSoundSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);          
+            {
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+
+                    StartAmbientSoundSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+
+                }).Start();                       
             }
             else
             {
-                StartRandomSoundSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+
+                    StartRandomSoundSource(soundSource, (float)p_volume, (float)p_pan, (float)p_pitch);
+
+                }).Start();
             }
         }
 
         public static void StartAmbientSoundSource(SoundSource soundSource, float volume, float pan, float pitch)
         {
-            bool playing = true;
+            Random randSeed = new Random();
+            Random randWaveSeed = new Random();
 
-            while (playing)
+            // Load wav files into memory first
+            List<string> wavePaths = new List<string>();
+            List<WaveName> waveList = ListAllWaveNames(soundSource.ThisSample);
+            List<SoundStream> soundStreamList = new List<SoundStream>();
+            List<WaveFormat> waveFormatList = new List<WaveFormat>();
+            List<AudioBuffer> audioBufferList = new List<AudioBuffer>();
+
+            foreach (WaveName waveName in waveList)
+            {
+                wavePaths.Add(GetWaveFilePath(waveName));
+            }
+
+            foreach (string wavePath in wavePaths)
+            {
+                soundStreamList.Add(new SoundStream(File.OpenRead(wavePath)));
+
+                waveFormatList.Add(soundStreamList.Last().Format);
+
+                audioBufferList.Add(new AudioBuffer
+                {
+                    Stream = soundStreamList.Last().ToDataStream(),
+                    AudioBytes = (int)soundStreamList.Last().Length,
+                    Flags = BufferFlags.EndOfStream
+                });
+
+                soundStreamList.Last().Close();
+            }
+
+            while (soundSource.IsPlaying)
             {
                 if (!soundSource.AudioBufferBusy)
                 {
-                    soundSource.AudioBufferBusy = false;
-
-                    WaveName waveName = ReturnRandomWaveName(soundSource.ThisSample);
-
-                    string filePath = GetWaveFilePath(waveName);
-
-                    SoundStream stream = new SoundStream(File.OpenRead(filePath));
-
-                    WaveFormat waveFormat = stream.Format;
-
                     soundSource.AudioBufferBusy = true;
 
-                    AudioBuffer buffer = new AudioBuffer
-                    {
-                        Stream = stream.ToDataStream(),
-                        AudioBytes = (int)stream.Length,
-                        Flags = BufferFlags.EndOfStream
-                    };
+                    int randomWaveIndex = randWaveSeed.Next(0, waveList.Count);
 
-                    stream.Close();
-
-                    soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+                    soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormatList[randomWaveIndex], true);
 
                     // Adds a sample callback to check that they are working on source voices
                     soundSource.ThisVoice.BufferEnd += (context) => soundSource.AudioBufferBusy = false;
-                    soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+                    soundSource.ThisVoice.SubmitSourceBuffer(audioBufferList[randomWaveIndex], soundStreamList[randomWaveIndex].DecodedPacketsInfo);
 
                     soundSource.ThisVoice.SetVolume(volume);
 
                     soundSource.ThisVoice.Start();
 
-                    buffer.Stream.Dispose();
+                    audioBufferList[randomWaveIndex].Stream.Dispose();
                 }
 
                 System.Threading.Thread.Sleep(33);
@@ -134,47 +154,57 @@ namespace MaraSoundsMachine
 
         public static void StartRandomSoundSource(SoundSource soundSource, float volume, float pan, float pitch)
         {
-            bool playing = true;
-
             Random randSeed = new Random();
+            Random randWaveSeed = new Random();
 
-            while (playing)
+            // Load wav files into memory first
+            List<string> wavePaths = new List<string>();
+            List<WaveName> waveList = ListAllWaveNames(soundSource.ThisSample);
+            List<SoundStream> soundStreamList = new List<SoundStream>();
+            List<WaveFormat> waveFormatList = new List<WaveFormat>();
+            List<AudioBuffer> audioBufferList = new List<AudioBuffer>();
+
+            foreach (WaveName waveName in waveList)
+            {
+                wavePaths.Add(GetWaveFilePath(waveName));
+            }
+
+            foreach (string wavePath in wavePaths)
+            {
+                soundStreamList.Add(new SoundStream(File.OpenRead(wavePath)));
+
+                waveFormatList.Add(soundStreamList.Last().Format);
+
+                audioBufferList.Add(new AudioBuffer
+                {
+                    Stream = soundStreamList.Last().ToDataStream(),
+                    AudioBytes = (int)soundStreamList.Last().Length,
+                    Flags = BufferFlags.EndOfStream
+                });
+
+                soundStreamList.Last().Close();
+            }
+
+            while (soundSource.IsPlaying)
             {
 
                 if (!soundSource.AudioBufferBusy && (randSeed.Next(100) < (soundSource.BaseFrequency + soundSource.DeltaFrequency)))
                 {
-                    soundSource.AudioBufferBusy = false;
-
-                    WaveName waveName = ReturnRandomWaveName(soundSource.ThisSample);
-
-                    string filePath = GetWaveFilePath(waveName);
-
-                    SoundStream stream = new SoundStream(File.OpenRead(filePath));
-
-                    WaveFormat waveFormat = stream.Format;
-
                     soundSource.AudioBufferBusy = true;
 
-                    AudioBuffer buffer = new AudioBuffer
-                    {
-                        Stream = stream.ToDataStream(),
-                        AudioBytes = (int)stream.Length,
-                        Flags = BufferFlags.EndOfStream
-                    };
+                    int randomWaveIndex = randWaveSeed.Next(0, waveList.Count);
 
-                    stream.Close();
-
-                    soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormat, true);
+                    soundSource.ThisVoice = new SourceVoice(yourAudiodevice, waveFormatList[randomWaveIndex], true);
 
                     // Adds a sample callback to check that they are working on source voices
                     soundSource.ThisVoice.BufferEnd += (context) => soundSource.AudioBufferBusy = false;
-                    soundSource.ThisVoice.SubmitSourceBuffer(buffer, stream.DecodedPacketsInfo);
+                    soundSource.ThisVoice.SubmitSourceBuffer(audioBufferList[randomWaveIndex], soundStreamList[randomWaveIndex].DecodedPacketsInfo);
 
                     soundSource.ThisVoice.SetVolume(volume);
 
                     soundSource.ThisVoice.Start();
 
-                    buffer.Stream.Dispose();
+                    audioBufferList[randomWaveIndex].Stream.Dispose();
                 }
 
                 System.Threading.Thread.Sleep(33);
@@ -370,6 +400,139 @@ namespace MaraSoundsMachine
             return filePath;
         }
 
+        public static List<WaveName> ListAllWaveNames(SampleName sampleName)
+        {
+            List<WaveName> waveList = new List<WaveName>();
+
+            #region Wave Selector
+            switch (sampleName)
+            {
+                case SampleName.JjaroCreak:
+                    waveList.Add(WaveName.JjaroCreak0);
+                    waveList.Add(WaveName.JjaroCreak1);
+                    break;
+                case SampleName.Loon:
+                    waveList.Add(WaveName.Loon0);
+                    waveList.Add(WaveName.Loon1);
+                    waveList.Add(WaveName.Loon2);
+                    break;
+                case SampleName.Water:
+                    waveList.Add(WaveName.Water0);
+                    waveList.Add(WaveName.Water1);
+                    waveList.Add(WaveName.Water2);
+                    break;
+                case SampleName.Sewage:
+                    waveList.Add(WaveName.Sewage0);
+                    waveList.Add(WaveName.Sewage1);
+                    waveList.Add(WaveName.Sewage2);
+                    break;
+                case SampleName.Lava:
+                    waveList.Add(WaveName.Lava0);
+                    waveList.Add(WaveName.Lava1);
+                    waveList.Add(WaveName.Lava2);
+                    break;
+                case SampleName.Goo:
+                    waveList.Add(WaveName.Goo0);
+                    waveList.Add(WaveName.Goo1);
+                    waveList.Add(WaveName.Goo2);
+                    break;
+                case SampleName.UnderStuff:
+                    waveList.Add(WaveName.UnderStuff);
+                    break;
+                case SampleName.Wind:
+                    waveList.Add(WaveName.Wind0);
+                    waveList.Add(WaveName.Wind1);
+                    waveList.Add(WaveName.Wind2);
+                    waveList.Add(WaveName.Wind3);
+                    break;
+                case SampleName.Waterfall:
+                    waveList.Add(WaveName.Waterfall0);
+                    waveList.Add(WaveName.Waterfall1);
+                    break;
+                case SampleName.Siren:
+                    waveList.Add(WaveName.Siren);
+                    break;
+                case SampleName.Fan:
+                    waveList.Add(WaveName.Fan);
+                    break;
+                case SampleName.SphtPlatform:
+                    waveList.Add(WaveName.SphtPlatform);
+                    break;
+                case SampleName.AlienHarmonics:
+                    waveList.Add(WaveName.AlienHarmonics0);
+                    waveList.Add(WaveName.AlienHarmonics1);
+                    break;
+                case SampleName.HeavySphtPlatform:
+                    waveList.Add(WaveName.HeavySphtPlatform);
+                    break;
+                case SampleName.LightMachinery:
+                    waveList.Add(WaveName.LightMachinery);
+                    break;
+                case SampleName.HeavyMachinery:
+                    waveList.Add(WaveName.HeavyMachinery);
+                    break;
+                case SampleName.Transformer:
+                    waveList.Add(WaveName.Transformer);
+                    break;
+                case SampleName.SparkingTransformer:
+                    waveList.Add(WaveName.SparkingTransformer0);
+                    waveList.Add(WaveName.SparkingTransformer1);
+                    waveList.Add(WaveName.SparkingTransformer2);
+                    break;
+                case SampleName.WaterDrip:
+                    waveList.Add(WaveName.WaterDrip0);
+                    waveList.Add(WaveName.WaterDrip1);
+                    waveList.Add(WaveName.WaterDrip2);
+                    waveList.Add(WaveName.WaterDrip3);
+                    break;
+                case SampleName.MachineBinder:
+                    waveList.Add(WaveName.MachineBinder);
+                    break;
+                case SampleName.MachineBookpress:
+                    waveList.Add(WaveName.MachineBookpress);
+                    break;
+                case SampleName.MachinePuncher:
+                    waveList.Add(WaveName.MachinePuncher);
+                    break;
+                case SampleName.Electric:
+                    waveList.Add(WaveName.Electric);
+                    break;
+                case SampleName.Alarm:
+                    waveList.Add(WaveName.Alarm);
+                    break;
+                case SampleName.NightWind:
+                    waveList.Add(WaveName.NightWind0);
+                    waveList.Add(WaveName.NightWind1);
+                    waveList.Add(WaveName.NightWind2);
+                    break;
+                case SampleName.SurfaceExplosion:
+                    waveList.Add(WaveName.SurfaceExplosion0);
+                    waveList.Add(WaveName.SurfaceExplosion1);
+                    waveList.Add(WaveName.SurfaceExplosion2);
+                    break;
+                case SampleName.UndergroundExplosion:
+                    waveList.Add(WaveName.UndergroundExplosion);
+                    break;
+                case SampleName.PfhorPlatform:
+                    waveList.Add(WaveName.PfhorPlatform);
+                    break;
+                case SampleName.PfhorDoor:
+                    waveList.Add(WaveName.PfhorDoor);
+                    break;
+                case SampleName.AlienNoise1:
+                    waveList.Add(WaveName.AlienNoise1_0);
+                    waveList.Add(WaveName.AlienNoise1_1);
+                    break;
+                case SampleName.AlienNoise2:
+                    waveList.Add(WaveName.AlienNoise2_0);
+                    waveList.Add(WaveName.AlienNoise2_1);
+                    break;
+            }
+            #endregion
+
+            return waveList;
+        }
+
         public static string ReturnEnglishSampleName(SampleName sampleName)
         {
             string englishName = "";
@@ -494,138 +657,12 @@ namespace MaraSoundsMachine
         public static WaveName ReturnRandomWaveName(SampleName sampleName)
         {
             WaveName randomWaveName = WaveName.JjaroCreak0;
-            List<WaveName> waveSelectionList = new List<WaveName>();
-
-            #region Random Sound Selector
-            switch (sampleName)
-            {
-                case SampleName.JjaroCreak:
-                    waveSelectionList.Add(WaveName.JjaroCreak0);
-                    waveSelectionList.Add(WaveName.JjaroCreak1);
-                    break;
-                case SampleName.Loon:
-                    waveSelectionList.Add(WaveName.Loon0);
-                    waveSelectionList.Add(WaveName.Loon1);
-                    waveSelectionList.Add(WaveName.Loon2);
-                    break;
-                case SampleName.Water:
-                    waveSelectionList.Add(WaveName.Water0);
-                    waveSelectionList.Add(WaveName.Water1);
-                    waveSelectionList.Add(WaveName.Water2);
-                    break;
-                case SampleName.Sewage:
-                    waveSelectionList.Add(WaveName.Sewage0);
-                    waveSelectionList.Add(WaveName.Sewage1);
-                    waveSelectionList.Add(WaveName.Sewage2);
-                    break;
-                case SampleName.Lava:
-                    waveSelectionList.Add(WaveName.Lava0);
-                    waveSelectionList.Add(WaveName.Lava1);
-                    waveSelectionList.Add(WaveName.Lava2);
-                    break;
-                case SampleName.Goo:
-                    waveSelectionList.Add(WaveName.Goo0);
-                    waveSelectionList.Add(WaveName.Goo1);
-                    waveSelectionList.Add(WaveName.Goo2);
-                    break;
-                case SampleName.UnderStuff:
-                    waveSelectionList.Add(WaveName.UnderStuff);
-                    break;
-                case SampleName.Wind:
-                    waveSelectionList.Add(WaveName.Wind0);
-                    waveSelectionList.Add(WaveName.Wind1);
-                    waveSelectionList.Add(WaveName.Wind2);
-                    waveSelectionList.Add(WaveName.Wind3);
-                    break;
-                case SampleName.Waterfall:
-                    waveSelectionList.Add(WaveName.Waterfall0);
-                    waveSelectionList.Add(WaveName.Waterfall1);
-                    break;
-                case SampleName.Siren:
-                    waveSelectionList.Add(WaveName.Siren);
-                    break;
-                case SampleName.Fan:
-                    waveSelectionList.Add(WaveName.Fan);
-                    break;
-                case SampleName.SphtPlatform:
-                    waveSelectionList.Add(WaveName.SphtPlatform);
-                    break;
-                case SampleName.AlienHarmonics:
-                    waveSelectionList.Add(WaveName.AlienHarmonics0);
-                    waveSelectionList.Add(WaveName.AlienHarmonics1);
-                    break;
-                case SampleName.HeavySphtPlatform:
-                    waveSelectionList.Add(WaveName.HeavySphtPlatform);
-                    break;
-                case SampleName.LightMachinery:
-                    waveSelectionList.Add(WaveName.LightMachinery);
-                    break;
-                case SampleName.HeavyMachinery:
-                    waveSelectionList.Add(WaveName.HeavyMachinery);
-                    break;
-                case SampleName.Transformer:
-                    waveSelectionList.Add(WaveName.Transformer);
-                    break;
-                case SampleName.SparkingTransformer:
-                    waveSelectionList.Add(WaveName.SparkingTransformer0);
-                    waveSelectionList.Add(WaveName.SparkingTransformer1);
-                    waveSelectionList.Add(WaveName.SparkingTransformer2);
-                    break;
-                case SampleName.WaterDrip:
-                    waveSelectionList.Add(WaveName.WaterDrip0);
-                    waveSelectionList.Add(WaveName.WaterDrip1);
-                    waveSelectionList.Add(WaveName.WaterDrip2);
-                    waveSelectionList.Add(WaveName.WaterDrip3);
-                    break;
-                case SampleName.MachineBinder:
-                    waveSelectionList.Add(WaveName.MachineBinder);
-                    break;
-                case SampleName.MachineBookpress:
-                    waveSelectionList.Add(WaveName.MachineBookpress);
-                    break;
-                case SampleName.MachinePuncher:
-                    waveSelectionList.Add(WaveName.MachinePuncher);
-                    break;
-                case SampleName.Electric:
-                    waveSelectionList.Add(WaveName.Electric);
-                    break;
-                case SampleName.Alarm:
-                    waveSelectionList.Add(WaveName.Alarm);
-                    break;
-                case SampleName.NightWind:
-                    waveSelectionList.Add(WaveName.NightWind0);
-                    waveSelectionList.Add(WaveName.NightWind1);
-                    waveSelectionList.Add(WaveName.NightWind2);
-                    break;
-                case SampleName.SurfaceExplosion:
-                    waveSelectionList.Add(WaveName.SurfaceExplosion0);
-                    waveSelectionList.Add(WaveName.SurfaceExplosion1);
-                    waveSelectionList.Add(WaveName.SurfaceExplosion2);
-                    break;
-                case SampleName.UndergroundExplosion:
-                    waveSelectionList.Add(WaveName.UndergroundExplosion);
-                    break;
-                case SampleName.PfhorPlatform:
-                    waveSelectionList.Add(WaveName.PfhorPlatform);
-                    break;
-                case SampleName.PfhorDoor:
-                    waveSelectionList.Add(WaveName.PfhorDoor);
-                    break;
-                case SampleName.AlienNoise1:
-                    waveSelectionList.Add(WaveName.AlienNoise1_0);
-                    waveSelectionList.Add(WaveName.AlienNoise1_1);
-                    break;
-                case SampleName.AlienNoise2:
-                    waveSelectionList.Add(WaveName.AlienNoise2_0);
-                    waveSelectionList.Add(WaveName.AlienNoise2_1);
-                    break;
-            }
+            List<WaveName> waveSelectionList = ListAllWaveNames(sampleName);
 
             // Select an element from the list at random
             Random random = new Random();
             int randomIndex = random.Next(0, waveSelectionList.Count);
             randomWaveName = waveSelectionList[randomIndex];
-            #endregion
 
             return randomWaveName;
         }

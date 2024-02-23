@@ -31,7 +31,6 @@ namespace MaraSoundsMachine
         {
 
         }
-
         #endregion
 
         #region Tab Control Components
@@ -398,13 +397,13 @@ namespace MaraSoundsMachine
                 if (AudioHandler.soundSourcesList.Count > 0)
                 {
                     AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
-                }               
+                }
             }
         }
 
         private void startPlayback_ButtonClick(object sender, EventArgs e)
         {
-            if (AudioHandler.audioPlaying)
+            if (AudioHandler.uiPlaybackEnabled)
             {
                 this.startPlayback_Button.Text = "Start Playback";
                 AudioHandler.StopAudioPlayback();
