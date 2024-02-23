@@ -31,44 +31,54 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.soundPanel_tabControl = new System.Windows.Forms.TabControl();
             this.soundSource_tabPage = new System.Windows.Forms.TabPage();
-            this.freqRand_Label = new System.Windows.Forms.Label();
+            this.periodRand_Label = new System.Windows.Forms.Label();
             this.freqRand1_Label = new System.Windows.Forms.Label();
             this.freqRand0_Label = new System.Windows.Forms.Label();
-            this.freqRandomness_trackBar = new System.Windows.Forms.TrackBar();
+            this.deltaPeriod_trackBar = new System.Windows.Forms.TrackBar();
             this.volumeRand1_Label = new System.Windows.Forms.Label();
             this.volumeRand0_label = new System.Windows.Forms.Label();
             this.volumeRandomness_Label = new System.Windows.Forms.Label();
-            this.volumeRandomness_trackBar = new System.Windows.Forms.TrackBar();
+            this.deltaVolume_trackBar = new System.Windows.Forms.TrackBar();
             this.panRandom1_Label = new System.Windows.Forms.Label();
             this.panRandom0_Label = new System.Windows.Forms.Label();
             this.panRandomness_Label = new System.Windows.Forms.Label();
-            this.panRandomness_trackBar = new System.Windows.Forms.TrackBar();
+            this.deltaPan_trackBar = new System.Windows.Forms.TrackBar();
             this.randomSoundFreqH_Label = new System.Windows.Forms.Label();
             this.randomSoundFreqL_Label = new System.Windows.Forms.Label();
-            this.randomFrequency_Label = new System.Windows.Forms.Label();
-            this.randomFrequency_trackBar = new System.Windows.Forms.TrackBar();
+            this.period_Label = new System.Windows.Forms.Label();
+            this.period_trackBar = new System.Windows.Forms.TrackBar();
             this.volume1_Label = new System.Windows.Forms.Label();
             this.volume0_Label = new System.Windows.Forms.Label();
             this.volumeControl_Label = new System.Windows.Forms.Label();
-            this.volumeControl_trackBar = new System.Windows.Forms.TrackBar();
+            this.volume_trackBar = new System.Windows.Forms.TrackBar();
             this.rEar_Label = new System.Windows.Forms.Label();
             this.lEar_Label = new System.Windows.Forms.Label();
             this.panControl_Label = new System.Windows.Forms.Label();
-            this.panControl_trackBar = new System.Windows.Forms.TrackBar();
+            this.pan_trackBar = new System.Windows.Forms.TrackBar();
             this.sampleSelector_Label = new System.Windows.Forms.Label();
             this.sampleSelector_comboBox = new System.Windows.Forms.ComboBox();
             this.soundSource_Enabled_checkBox = new System.Windows.Forms.CheckBox();
             this.startPlayback_Button = new System.Windows.Forms.Button();
             this.addSoundSource_Button = new System.Windows.Forms.Button();
             this.removeSoundSource_Button = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.pitch_Label = new System.Windows.Forms.Label();
+            this.pitchRand_Label = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.soundPanel_tabControl.SuspendLayout();
             this.soundSource_tabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.freqRandomness_trackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeRandomness_trackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panRandomness_trackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.randomFrequency_trackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeControl_trackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panControl_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaPeriod_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaVolume_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaPan_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.period_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volume_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pan_trackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.SuspendLayout();
             // 
             // soundPanel_tabControl
@@ -79,63 +89,71 @@
             this.soundPanel_tabControl.Multiline = true;
             this.soundPanel_tabControl.Name = "soundPanel_tabControl";
             this.soundPanel_tabControl.SelectedIndex = 0;
-            this.soundPanel_tabControl.Size = new System.Drawing.Size(608, 363);
+            this.soundPanel_tabControl.Size = new System.Drawing.Size(608, 439);
             this.soundPanel_tabControl.TabIndex = 0;
             // 
             // soundSource_tabPage
             // 
             this.soundSource_tabPage.BackColor = System.Drawing.Color.Black;
             this.soundSource_tabPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.soundSource_tabPage.Controls.Add(this.freqRand_Label);
+            this.soundSource_tabPage.Controls.Add(this.label4);
+            this.soundSource_tabPage.Controls.Add(this.label3);
+            this.soundSource_tabPage.Controls.Add(this.label2);
+            this.soundSource_tabPage.Controls.Add(this.label1);
+            this.soundSource_tabPage.Controls.Add(this.pitchRand_Label);
+            this.soundSource_tabPage.Controls.Add(this.pitch_Label);
+            this.soundSource_tabPage.Controls.Add(this.trackBar2);
+            this.soundSource_tabPage.Controls.Add(this.trackBar1);
+            this.soundSource_tabPage.Controls.Add(this.periodRand_Label);
             this.soundSource_tabPage.Controls.Add(this.freqRand1_Label);
             this.soundSource_tabPage.Controls.Add(this.freqRand0_Label);
-            this.soundSource_tabPage.Controls.Add(this.freqRandomness_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.deltaPeriod_trackBar);
             this.soundSource_tabPage.Controls.Add(this.volumeRand1_Label);
             this.soundSource_tabPage.Controls.Add(this.volumeRand0_label);
             this.soundSource_tabPage.Controls.Add(this.volumeRandomness_Label);
-            this.soundSource_tabPage.Controls.Add(this.volumeRandomness_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.deltaVolume_trackBar);
             this.soundSource_tabPage.Controls.Add(this.panRandom1_Label);
             this.soundSource_tabPage.Controls.Add(this.panRandom0_Label);
             this.soundSource_tabPage.Controls.Add(this.panRandomness_Label);
-            this.soundSource_tabPage.Controls.Add(this.panRandomness_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.deltaPan_trackBar);
             this.soundSource_tabPage.Controls.Add(this.randomSoundFreqH_Label);
             this.soundSource_tabPage.Controls.Add(this.randomSoundFreqL_Label);
-            this.soundSource_tabPage.Controls.Add(this.randomFrequency_Label);
-            this.soundSource_tabPage.Controls.Add(this.randomFrequency_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.period_Label);
+            this.soundSource_tabPage.Controls.Add(this.period_trackBar);
             this.soundSource_tabPage.Controls.Add(this.volume1_Label);
             this.soundSource_tabPage.Controls.Add(this.volume0_Label);
             this.soundSource_tabPage.Controls.Add(this.volumeControl_Label);
-            this.soundSource_tabPage.Controls.Add(this.volumeControl_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.volume_trackBar);
             this.soundSource_tabPage.Controls.Add(this.rEar_Label);
             this.soundSource_tabPage.Controls.Add(this.lEar_Label);
             this.soundSource_tabPage.Controls.Add(this.panControl_Label);
-            this.soundSource_tabPage.Controls.Add(this.panControl_trackBar);
+            this.soundSource_tabPage.Controls.Add(this.pan_trackBar);
             this.soundSource_tabPage.Controls.Add(this.sampleSelector_Label);
             this.soundSource_tabPage.Controls.Add(this.sampleSelector_comboBox);
             this.soundSource_tabPage.Controls.Add(this.soundSource_Enabled_checkBox);
             this.soundSource_tabPage.Location = new System.Drawing.Point(4, 23);
             this.soundSource_tabPage.Name = "soundSource_tabPage";
-            this.soundSource_tabPage.Size = new System.Drawing.Size(600, 336);
+            this.soundSource_tabPage.Size = new System.Drawing.Size(600, 412);
             this.soundSource_tabPage.TabIndex = 0;
             this.soundSource_tabPage.Text = "Jjaro Ship Creak";
             // 
-            // freqRand_Label
+            // periodRand_Label
             // 
-            this.freqRand_Label.AutoSize = true;
-            this.freqRand_Label.Location = new System.Drawing.Point(376, 255);
-            this.freqRand_Label.Name = "freqRand_Label";
-            this.freqRand_Label.Size = new System.Drawing.Size(147, 14);
-            this.freqRand_Label.TabIndex = 27;
-            this.freqRand_Label.Text = "Frequency Randomness";
+            this.periodRand_Label.AutoSize = true;
+            this.periodRand_Label.Location = new System.Drawing.Point(387, 255);
+            this.periodRand_Label.Name = "periodRand_Label";
+            this.periodRand_Label.Size = new System.Drawing.Size(119, 14);
+            this.periodRand_Label.TabIndex = 27;
+            this.periodRand_Label.Text = "Delta Period (s)";
             // 
             // freqRand1_Label
             // 
             this.freqRand1_Label.AutoSize = true;
-            this.freqRand1_Label.Location = new System.Drawing.Point(550, 303);
+            this.freqRand1_Label.Location = new System.Drawing.Point(553, 303);
             this.freqRand1_Label.Name = "freqRand1_Label";
-            this.freqRand1_Label.Size = new System.Drawing.Size(28, 14);
+            this.freqRand1_Label.Size = new System.Drawing.Size(21, 14);
             this.freqRand1_Label.TabIndex = 26;
-            this.freqRand1_Label.Text = "100";
+            this.freqRand1_Label.Text = "30";
             // 
             // freqRand0_Label
             // 
@@ -146,18 +164,18 @@
             this.freqRand0_Label.TabIndex = 25;
             this.freqRand0_Label.Text = "0";
             // 
-            // freqRandomness_trackBar
+            // deltaPeriod_trackBar
             // 
-            this.freqRandomness_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.freqRandomness_trackBar.LargeChange = 10;
-            this.freqRandomness_trackBar.Location = new System.Drawing.Point(310, 272);
-            this.freqRandomness_trackBar.Maximum = 100;
-            this.freqRandomness_trackBar.Name = "freqRandomness_trackBar";
-            this.freqRandomness_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.freqRandomness_trackBar.SmallChange = 5;
-            this.freqRandomness_trackBar.TabIndex = 24;
-            this.freqRandomness_trackBar.TickFrequency = 5;
-            this.freqRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_freqRandomnessValueChanged);
+            this.deltaPeriod_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deltaPeriod_trackBar.LargeChange = 33;
+            this.deltaPeriod_trackBar.Location = new System.Drawing.Point(310, 272);
+            this.deltaPeriod_trackBar.Maximum = 999;
+            this.deltaPeriod_trackBar.Name = "deltaPeriod_trackBar";
+            this.deltaPeriod_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.deltaPeriod_trackBar.SmallChange = 11;
+            this.deltaPeriod_trackBar.TabIndex = 24;
+            this.deltaPeriod_trackBar.TickFrequency = 5;
+            this.deltaPeriod_trackBar.ValueChanged += new System.EventHandler(this.soundControl_deltaPeriodValueChanged);
             // 
             // volumeRand1_Label
             // 
@@ -180,32 +198,31 @@
             // volumeRandomness_Label
             // 
             this.volumeRandomness_Label.AutoSize = true;
-            this.volumeRandomness_Label.Location = new System.Drawing.Point(387, 180);
+            this.volumeRandomness_Label.Location = new System.Drawing.Point(394, 180);
             this.volumeRandomness_Label.Name = "volumeRandomness_Label";
-            this.volumeRandomness_Label.Size = new System.Drawing.Size(126, 14);
+            this.volumeRandomness_Label.Size = new System.Drawing.Size(91, 14);
             this.volumeRandomness_Label.TabIndex = 21;
-            this.volumeRandomness_Label.Text = "Volume Randomness";
+            this.volumeRandomness_Label.Text = "Delta Volume";
             // 
-            // volumeRandomness_trackBar
+            // deltaVolume_trackBar
             // 
-            this.volumeRandomness_trackBar.LargeChange = 10;
-            this.volumeRandomness_trackBar.Location = new System.Drawing.Point(310, 197);
-            this.volumeRandomness_trackBar.Maximum = 100;
-            this.volumeRandomness_trackBar.Name = "volumeRandomness_trackBar";
-            this.volumeRandomness_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.volumeRandomness_trackBar.SmallChange = 5;
-            this.volumeRandomness_trackBar.TabIndex = 20;
-            this.volumeRandomness_trackBar.TickFrequency = 5;
-            this.volumeRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeRandomnessValueChanged);
+            this.deltaVolume_trackBar.LargeChange = 10;
+            this.deltaVolume_trackBar.Location = new System.Drawing.Point(310, 197);
+            this.deltaVolume_trackBar.Maximum = 100;
+            this.deltaVolume_trackBar.Name = "deltaVolume_trackBar";
+            this.deltaVolume_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.deltaVolume_trackBar.TabIndex = 20;
+            this.deltaVolume_trackBar.TickFrequency = 5;
+            this.deltaVolume_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeRandomnessValueChanged);
             // 
             // panRandom1_Label
             // 
             this.panRandom1_Label.AutoSize = true;
-            this.panRandom1_Label.Location = new System.Drawing.Point(550, 154);
+            this.panRandom1_Label.Location = new System.Drawing.Point(555, 154);
             this.panRandom1_Label.Name = "panRandom1_Label";
-            this.panRandom1_Label.Size = new System.Drawing.Size(28, 14);
+            this.panRandom1_Label.Size = new System.Drawing.Size(14, 14);
             this.panRandom1_Label.TabIndex = 19;
-            this.panRandom1_Label.Text = "100";
+            this.panRandom1_Label.Text = "R";
             // 
             // panRandom0_Label
             // 
@@ -214,37 +231,37 @@
             this.panRandom0_Label.Name = "panRandom0_Label";
             this.panRandom0_Label.Size = new System.Drawing.Size(14, 14);
             this.panRandom0_Label.TabIndex = 18;
-            this.panRandom0_Label.Text = "0";
+            this.panRandom0_Label.Text = "L";
             // 
             // panRandomness_Label
             // 
             this.panRandomness_Label.AutoSize = true;
-            this.panRandomness_Label.Location = new System.Drawing.Point(396, 106);
+            this.panRandomness_Label.Location = new System.Drawing.Point(404, 106);
             this.panRandomness_Label.Name = "panRandomness_Label";
-            this.panRandomness_Label.Size = new System.Drawing.Size(105, 14);
+            this.panRandomness_Label.Size = new System.Drawing.Size(70, 14);
             this.panRandomness_Label.TabIndex = 17;
-            this.panRandomness_Label.Text = "Pan Randomness";
+            this.panRandomness_Label.Text = "Delta Pan";
             // 
-            // panRandomness_trackBar
+            // deltaPan_trackBar
             // 
-            this.panRandomness_trackBar.LargeChange = 10;
-            this.panRandomness_trackBar.Location = new System.Drawing.Point(310, 123);
-            this.panRandomness_trackBar.Maximum = 100;
-            this.panRandomness_trackBar.Name = "panRandomness_trackBar";
-            this.panRandomness_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.panRandomness_trackBar.SmallChange = 5;
-            this.panRandomness_trackBar.TabIndex = 16;
-            this.panRandomness_trackBar.TickFrequency = 5;
-            this.panRandomness_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panRandomnessValueChanged);
+            this.deltaPan_trackBar.LargeChange = 10;
+            this.deltaPan_trackBar.Location = new System.Drawing.Point(310, 123);
+            this.deltaPan_trackBar.Maximum = 100;
+            this.deltaPan_trackBar.Minimum = -100;
+            this.deltaPan_trackBar.Name = "deltaPan_trackBar";
+            this.deltaPan_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.deltaPan_trackBar.TabIndex = 16;
+            this.deltaPan_trackBar.TickFrequency = 5;
+            this.deltaPan_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panRandomnessValueChanged);
             // 
             // randomSoundFreqH_Label
             // 
             this.randomSoundFreqH_Label.AutoSize = true;
-            this.randomSoundFreqH_Label.Location = new System.Drawing.Point(261, 303);
+            this.randomSoundFreqH_Label.Location = new System.Drawing.Point(264, 303);
             this.randomSoundFreqH_Label.Name = "randomSoundFreqH_Label";
-            this.randomSoundFreqH_Label.Size = new System.Drawing.Size(28, 14);
+            this.randomSoundFreqH_Label.Size = new System.Drawing.Size(21, 14);
             this.randomSoundFreqH_Label.TabIndex = 15;
-            this.randomSoundFreqH_Label.Text = "100";
+            this.randomSoundFreqH_Label.Text = "30";
             // 
             // randomSoundFreqL_Label
             // 
@@ -255,29 +272,29 @@
             this.randomSoundFreqL_Label.TabIndex = 14;
             this.randomSoundFreqL_Label.Text = "1";
             // 
-            // randomFrequency_Label
+            // period_Label
             // 
-            this.randomFrequency_Label.AutoSize = true;
-            this.randomFrequency_Label.Location = new System.Drawing.Point(76, 255);
-            this.randomFrequency_Label.Name = "randomFrequency_Label";
-            this.randomFrequency_Label.Size = new System.Drawing.Size(161, 14);
-            this.randomFrequency_Label.TabIndex = 13;
-            this.randomFrequency_Label.Text = "Random Sound Frequency";
+            this.period_Label.AutoSize = true;
+            this.period_Label.Location = new System.Drawing.Point(116, 255);
+            this.period_Label.Name = "period_Label";
+            this.period_Label.Size = new System.Drawing.Size(77, 14);
+            this.period_Label.TabIndex = 13;
+            this.period_Label.Text = "Period (s)";
             // 
-            // randomFrequency_trackBar
+            // period_trackBar
             // 
-            this.randomFrequency_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.randomFrequency_trackBar.LargeChange = 10;
-            this.randomFrequency_trackBar.Location = new System.Drawing.Point(21, 272);
-            this.randomFrequency_trackBar.Maximum = 100;
-            this.randomFrequency_trackBar.Minimum = 1;
-            this.randomFrequency_trackBar.Name = "randomFrequency_trackBar";
-            this.randomFrequency_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.randomFrequency_trackBar.SmallChange = 5;
-            this.randomFrequency_trackBar.TabIndex = 12;
-            this.randomFrequency_trackBar.TickFrequency = 5;
-            this.randomFrequency_trackBar.Value = 50;
-            this.randomFrequency_trackBar.ValueChanged += new System.EventHandler(this.soundControl_baseFrequencyValueChanged);
+            this.period_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.period_trackBar.LargeChange = 33;
+            this.period_trackBar.Location = new System.Drawing.Point(21, 272);
+            this.period_trackBar.Maximum = 999;
+            this.period_trackBar.Minimum = 1;
+            this.period_trackBar.Name = "period_trackBar";
+            this.period_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.period_trackBar.SmallChange = 11;
+            this.period_trackBar.TabIndex = 12;
+            this.period_trackBar.TickFrequency = 5;
+            this.period_trackBar.Value = 33;
+            this.period_trackBar.ValueChanged += new System.EventHandler(this.soundControl_periodValueChanged);
             // 
             // volume1_Label
             // 
@@ -306,19 +323,18 @@
             this.volumeControl_Label.TabIndex = 9;
             this.volumeControl_Label.Text = "Volume";
             // 
-            // volumeControl_trackBar
+            // volume_trackBar
             // 
-            this.volumeControl_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.volumeControl_trackBar.LargeChange = 10;
-            this.volumeControl_trackBar.Location = new System.Drawing.Point(21, 197);
-            this.volumeControl_trackBar.Maximum = 100;
-            this.volumeControl_trackBar.Name = "volumeControl_trackBar";
-            this.volumeControl_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.volumeControl_trackBar.SmallChange = 5;
-            this.volumeControl_trackBar.TabIndex = 8;
-            this.volumeControl_trackBar.TickFrequency = 5;
-            this.volumeControl_trackBar.Value = 100;
-            this.volumeControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeStateChanged);
+            this.volume_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.volume_trackBar.LargeChange = 10;
+            this.volume_trackBar.Location = new System.Drawing.Point(21, 197);
+            this.volume_trackBar.Maximum = 100;
+            this.volume_trackBar.Name = "volume_trackBar";
+            this.volume_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.volume_trackBar.TabIndex = 8;
+            this.volume_trackBar.TickFrequency = 5;
+            this.volume_trackBar.Value = 100;
+            this.volume_trackBar.ValueChanged += new System.EventHandler(this.soundControl_volumeStateChanged);
             // 
             // rEar_Label
             // 
@@ -341,26 +357,25 @@
             // panControl_Label
             // 
             this.panControl_Label.AutoSize = true;
-            this.panControl_Label.Location = new System.Drawing.Point(123, 106);
+            this.panControl_Label.Location = new System.Drawing.Point(138, 106);
             this.panControl_Label.Name = "panControl_Label";
-            this.panControl_Label.Size = new System.Drawing.Size(56, 14);
+            this.panControl_Label.Size = new System.Drawing.Size(28, 14);
             this.panControl_Label.TabIndex = 5;
-            this.panControl_Label.Text = "Panning";
+            this.panControl_Label.Text = "Pan";
             // 
-            // panControl_trackBar
+            // pan_trackBar
             // 
-            this.panControl_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panControl_trackBar.LargeChange = 10;
-            this.panControl_trackBar.Location = new System.Drawing.Point(21, 123);
-            this.panControl_trackBar.Maximum = 100;
-            this.panControl_trackBar.Minimum = -100;
-            this.panControl_trackBar.Name = "panControl_trackBar";
-            this.panControl_trackBar.Size = new System.Drawing.Size(261, 45);
-            this.panControl_trackBar.SmallChange = 5;
-            this.panControl_trackBar.TabIndex = 4;
-            this.panControl_trackBar.TickFrequency = 5;
-            this.panControl_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panStateChanged);
-            this.panControl_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panning_mouseRelease);
+            this.pan_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pan_trackBar.LargeChange = 10;
+            this.pan_trackBar.Location = new System.Drawing.Point(21, 123);
+            this.pan_trackBar.Maximum = 100;
+            this.pan_trackBar.Minimum = -100;
+            this.pan_trackBar.Name = "pan_trackBar";
+            this.pan_trackBar.Size = new System.Drawing.Size(261, 45);
+            this.pan_trackBar.TabIndex = 4;
+            this.pan_trackBar.TickFrequency = 5;
+            this.pan_trackBar.ValueChanged += new System.EventHandler(this.soundControl_panStateChanged);
+            this.pan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panning_mouseRelease);
             // 
             // sampleSelector_Label
             // 
@@ -459,13 +474,90 @@
             this.removeSoundSource_Button.UseVisualStyleBackColor = true;
             this.removeSoundSource_Button.Click += new System.EventHandler(this.removeSoundSource_buttonClick);
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.trackBar1.LargeChange = 10;
+            this.trackBar1.Location = new System.Drawing.Point(24, 343);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(261, 45);
+            this.trackBar1.TabIndex = 28;
+            this.trackBar1.TickFrequency = 5;
+            this.trackBar1.Value = 100;
+            // 
+            // trackBar2
+            // 
+            this.trackBar2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.trackBar2.LargeChange = 10;
+            this.trackBar2.Location = new System.Drawing.Point(313, 343);
+            this.trackBar2.Maximum = 100;
+            this.trackBar2.Name = "trackBar2";
+            this.trackBar2.Size = new System.Drawing.Size(261, 45);
+            this.trackBar2.TabIndex = 29;
+            this.trackBar2.TickFrequency = 5;
+            this.trackBar2.Value = 100;
+            // 
+            // pitch_Label
+            // 
+            this.pitch_Label.AutoSize = true;
+            this.pitch_Label.Location = new System.Drawing.Point(128, 326);
+            this.pitch_Label.Name = "pitch_Label";
+            this.pitch_Label.Size = new System.Drawing.Size(42, 14);
+            this.pitch_Label.TabIndex = 30;
+            this.pitch_Label.Text = "Pitch";
+            // 
+            // pitchRand_Label
+            // 
+            this.pitchRand_Label.AutoSize = true;
+            this.pitchRand_Label.Location = new System.Drawing.Point(394, 326);
+            this.pitchRand_Label.Name = "pitchRand_Label";
+            this.pitchRand_Label.Size = new System.Drawing.Size(84, 14);
+            this.pitchRand_Label.TabIndex = 31;
+            this.pitchRand_Label.Text = "Delta Pitch";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 374);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(28, 14);
+            this.label1.TabIndex = 32;
+            this.label1.Text = "0.1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(268, 374);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(14, 14);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "5";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(307, 374);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(28, 14);
+            this.label3.TabIndex = 34;
+            this.label3.Text = "0.1";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(557, 374);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 14);
+            this.label4.TabIndex = 35;
+            this.label4.Text = "5";
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::MaraSoundsMachine.Properties.Resources.m1_sounds;
-            this.ClientSize = new System.Drawing.Size(634, 411);
+            this.ClientSize = new System.Drawing.Size(634, 490);
             this.Controls.Add(this.removeSoundSource_Button);
             this.Controls.Add(this.addSoundSource_Button);
             this.Controls.Add(this.startPlayback_Button);
@@ -474,19 +566,23 @@
             this.ForeColor = System.Drawing.Color.Lime;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximumSize = new System.Drawing.Size(650, 450);
-            this.MinimumSize = new System.Drawing.Size(650, 450);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(650, 529);
+            this.MinimumSize = new System.Drawing.Size(650, 529);
             this.Name = "MainForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Marathon Sounds Machine v0.1";
             this.soundPanel_tabControl.ResumeLayout(false);
             this.soundSource_tabPage.ResumeLayout(false);
             this.soundSource_tabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.freqRandomness_trackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeRandomness_trackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panRandomness_trackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.randomFrequency_trackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeControl_trackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panControl_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaPeriod_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaVolume_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaPan_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.period_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volume_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pan_trackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -501,30 +597,38 @@
         private System.Windows.Forms.Button removeSoundSource_Button;
         private System.Windows.Forms.ComboBox sampleSelector_comboBox;
         private System.Windows.Forms.Label sampleSelector_Label;
-        private System.Windows.Forms.TrackBar panControl_trackBar;
+        private System.Windows.Forms.TrackBar pan_trackBar;
         private System.Windows.Forms.Label panControl_Label;
         private System.Windows.Forms.Label lEar_Label;
         private System.Windows.Forms.Label rEar_Label;
-        private System.Windows.Forms.TrackBar volumeControl_trackBar;
+        private System.Windows.Forms.TrackBar volume_trackBar;
         private System.Windows.Forms.Label volumeControl_Label;
         private System.Windows.Forms.Label volume0_Label;
         private System.Windows.Forms.Label volume1_Label;
-        private System.Windows.Forms.TrackBar randomFrequency_trackBar;
-        private System.Windows.Forms.Label randomFrequency_Label;
+        private System.Windows.Forms.TrackBar period_trackBar;
+        private System.Windows.Forms.Label period_Label;
         private System.Windows.Forms.Label randomSoundFreqL_Label;
         private System.Windows.Forms.Label randomSoundFreqH_Label;
-        private System.Windows.Forms.TrackBar panRandomness_trackBar;
+        private System.Windows.Forms.TrackBar deltaPan_trackBar;
         private System.Windows.Forms.Label panRandomness_Label;
         private System.Windows.Forms.Label panRandom0_Label;
         private System.Windows.Forms.Label panRandom1_Label;
-        private System.Windows.Forms.TrackBar volumeRandomness_trackBar;
+        private System.Windows.Forms.TrackBar deltaVolume_trackBar;
         private System.Windows.Forms.Label volumeRandomness_Label;
         private System.Windows.Forms.Label volumeRand0_label;
         private System.Windows.Forms.Label volumeRand1_Label;
-        private System.Windows.Forms.TrackBar freqRandomness_trackBar;
+        private System.Windows.Forms.TrackBar deltaPeriod_trackBar;
         private System.Windows.Forms.Label freqRand0_Label;
         private System.Windows.Forms.Label freqRand1_Label;
-        private System.Windows.Forms.Label freqRand_Label;
+        private System.Windows.Forms.Label periodRand_Label;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.Label pitch_Label;
+        private System.Windows.Forms.Label pitchRand_Label;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 
