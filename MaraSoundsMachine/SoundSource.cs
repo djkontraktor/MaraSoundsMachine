@@ -222,7 +222,14 @@ namespace MaraSoundsMachine
 
                     SourceVoice.SetVolume(Inst_volume);
 
-                    SourceVoice.SetFrequencyRatio(1);
+                    float panR = (Inst_pan < 0) ? (1 + Inst_pan) : 1;
+                    float panL = (Inst_pan >= 0) ? (1 - Inst_pan) : 1;
+
+                    float[] panXfm = { panL, panR };
+
+                    SourceVoice.SetOutputMatrix(1, 2, panXfm);
+
+                    //SourceVoice.SetFrequencyRatio((float)-1);
 
                     SourceVoice.Start();
 
@@ -261,7 +268,14 @@ namespace MaraSoundsMachine
 
                     SourceVoice.SetVolume(Inst_volume);
 
-                    SourceVoice.SetFrequencyRatio((float)1.1);
+                    float panR = (Inst_pan < 0) ? (1 + Inst_pan) : 1;
+                    float panL = (Inst_pan >= 0) ? (1 - Inst_pan) : 1;
+
+                    float[] panXfm = { panL, panR };
+
+                    SourceVoice.SetOutputMatrix(1, 2, panXfm);
+
+                    //SourceVoice.SetFrequencyRatio((float)-1);
 
                     SourceVoice.Start();
 
@@ -292,10 +306,43 @@ namespace MaraSoundsMachine
             int rand_Period_ticks = (int)(randSeed.Next(0, Delta_period_ticks) * randSignC);
             float rand_Pitch = ((float)randSeed.NextDouble() * Delta_pitch) * randSignD;
 
-            Inst_volume = Base_volume + rand_Volume;
-            Inst_pan = Base_pan + rand_Pan;
+            if ((Base_volume + rand_Volume) >= 1)
+            {
+                Inst_volume = 1;
+            }
+            else
+            {
+                Inst_volume = Base_volume + rand_Volume;
+            }
+
+            if ((Base_pan + rand_Pan) >= 1)
+            {
+                Inst_pan = 1;
+            }
+            else if ((Base_pan + rand_Pan) <= -1)
+            {
+                Inst_pan = -1;
+            }
+            else
+            {
+                Inst_pan = Base_pan + rand_Pan;
+            }
+
             Inst_period_ticks = Base_period_ticks + rand_Period_ticks;
-            Inst_pitch = Base_pitch + rand_Pitch;
+
+            if ((Base_pitch + rand_Pitch) >= 5)
+            {
+                Inst_pitch = 5;
+            }
+            else if ((Base_pitch + rand_Pitch) <= 0.1)
+            {
+                Inst_pitch = (float)0.1;
+            }
+            else
+            {
+                Inst_pitch = Base_pitch + rand_Pitch;
+            }
+
         }
         #endregion
     }

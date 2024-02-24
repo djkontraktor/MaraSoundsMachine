@@ -608,14 +608,14 @@ namespace MaraSoundsMachine
             // pitch
             if (thisTrackBarName.StartsWith("pitch") && !thisTrackBarName.Contains("delta"))
             {
-                factor = 1 / 10;
+                factor = 0.1f;
                 AudioHandler.soundSourcesList[currentTab].Base_pitch = (float)(thisTrackBar.Value) * factor;
             }
 
             // volume
             if (thisTrackBarName.StartsWith("volume") && !thisTrackBarName.Contains("delta"))
             {
-                factor = 1 / 100;
+                factor = 0.01f;
                 AudioHandler.soundSourcesList[currentTab].Base_volume = (float)(thisTrackBar.Value) * factor;
             }
 
@@ -628,21 +628,21 @@ namespace MaraSoundsMachine
             // pan
             if (thisTrackBarName.StartsWith("pan") && !thisTrackBarName.Contains("delta"))
             {
-                factor = 1 / 100;
+                factor = 0.01f;
                 AudioHandler.soundSourcesList[currentTab].Base_pan = (float)(thisTrackBar.Value) * factor;
             }
 
             // Dpitch
             if (thisTrackBarName.Contains("pitch") && thisTrackBarName.StartsWith("delta"))
             {
-                factor = 1 / 10;
+                factor = 0.1f;
                 AudioHandler.soundSourcesList[currentTab].Delta_pitch = (float)(thisTrackBar.Value) * factor;
             }
 
             // Dvolume
             if (thisTrackBarName.Contains("volume") && thisTrackBarName.StartsWith("delta"))
             {
-                factor = 1 / 100;
+                factor = 0.01f;
                 AudioHandler.soundSourcesList[currentTab].Delta_volume = (float)(thisTrackBar.Value) * factor;
             }
 
@@ -655,7 +655,7 @@ namespace MaraSoundsMachine
             // Dpan
             if (thisTrackBarName.Contains("pan") && thisTrackBarName.StartsWith("delta"))
             {
-                factor = 1 / 100;
+                factor = 0.01f;
                 AudioHandler.soundSourcesList[currentTab].Delta_pan = (float)(thisTrackBar.Value) * factor;
             }
             #endregion
