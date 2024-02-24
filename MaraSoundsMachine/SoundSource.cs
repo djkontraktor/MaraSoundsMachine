@@ -229,7 +229,18 @@ namespace MaraSoundsMachine
 
                     SourceVoice.SetOutputMatrix(1, 2, panXfm);
 
-                    //SourceVoice.SetFrequencyRatio((float)-1);
+                    float freqRatio = 1;
+
+                    if (Inst_pitch > 1)
+                    {
+                        freqRatio = (float)Math.Pow(Inst_pitch, 10);
+                    }
+                    else
+                    {
+                        freqRatio = (float)Math.Pow(Inst_pitch, 0.5);
+                    }
+
+                    SourceVoice.SetFrequencyRatio(freqRatio);
 
                     SourceVoice.Start();
 
@@ -275,7 +286,18 @@ namespace MaraSoundsMachine
 
                     SourceVoice.SetOutputMatrix(1, 2, panXfm);
 
-                    //SourceVoice.SetFrequencyRatio((float)-1);
+                    float freqRatio = 1;
+
+                    if (Inst_pitch > 1)
+                    {
+                        freqRatio = (float)Math.Pow(Inst_pitch, 10);
+                    }
+                    else
+                    {
+                        freqRatio = (float)Math.Pow(Inst_pitch, 0.5);
+                    }
+
+                    SourceVoice.SetFrequencyRatio(freqRatio);
 
                     SourceVoice.Start();
 
