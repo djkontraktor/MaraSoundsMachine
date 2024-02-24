@@ -222,6 +222,8 @@ namespace MaraSoundsMachine
 
                     SourceVoice.SetVolume(Inst_volume);
 
+                    SourceVoice.SetFrequencyRatio(1);
+
                     SourceVoice.Start();
 
                     AudioBufferList[randomWaveIndex].Stream.Dispose();
@@ -258,6 +260,8 @@ namespace MaraSoundsMachine
                     SourceVoice.SubmitSourceBuffer(AudioBufferList[randomWaveIndex], SoundStreamList[randomWaveIndex].DecodedPacketsInfo);
 
                     SourceVoice.SetVolume(Inst_volume);
+
+                    SourceVoice.SetFrequencyRatio((float)1.1);
 
                     SourceVoice.Start();
 

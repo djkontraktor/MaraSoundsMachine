@@ -149,11 +149,11 @@
             // deltaPitchL_Label
             // 
             this.deltaPitchL_Label.AutoSize = true;
-            this.deltaPitchL_Label.Location = new System.Drawing.Point(310, 374);
+            this.deltaPitchL_Label.Location = new System.Drawing.Point(314, 374);
             this.deltaPitchL_Label.Name = "deltaPitchL_Label";
-            this.deltaPitchL_Label.Size = new System.Drawing.Size(28, 14);
+            this.deltaPitchL_Label.Size = new System.Drawing.Size(14, 14);
             this.deltaPitchL_Label.TabIndex = 34;
-            this.deltaPitchL_Label.Text = "0.1";
+            this.deltaPitchL_Label.Text = "0";
             // 
             // pitchH_Label
             // 
@@ -196,12 +196,11 @@
             this.deltaPitch_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.deltaPitch_trackBar.LargeChange = 10;
             this.deltaPitch_trackBar.Location = new System.Drawing.Point(313, 343);
-            this.deltaPitch_trackBar.Maximum = 100;
+            this.deltaPitch_trackBar.Maximum = 50;
             this.deltaPitch_trackBar.Name = "deltaPitch_trackBar";
             this.deltaPitch_trackBar.Size = new System.Drawing.Size(261, 45);
             this.deltaPitch_trackBar.TabIndex = 29;
             this.deltaPitch_trackBar.TickFrequency = 5;
-            this.deltaPitch_trackBar.Value = 100;
             this.deltaPitch_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
             // 
             // pitch_trackBar
@@ -209,12 +208,13 @@
             this.pitch_trackBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pitch_trackBar.LargeChange = 10;
             this.pitch_trackBar.Location = new System.Drawing.Point(24, 343);
-            this.pitch_trackBar.Maximum = 100;
+            this.pitch_trackBar.Maximum = 50;
+            this.pitch_trackBar.Minimum = 1;
             this.pitch_trackBar.Name = "pitch_trackBar";
             this.pitch_trackBar.Size = new System.Drawing.Size(261, 45);
             this.pitch_trackBar.TabIndex = 28;
             this.pitch_trackBar.TickFrequency = 5;
-            this.pitch_trackBar.Value = 100;
+            this.pitch_trackBar.Value = 10;
             this.pitch_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
             // 
             // deltaPeriod_Header
