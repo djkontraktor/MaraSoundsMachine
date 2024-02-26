@@ -12,8 +12,9 @@ using static MaraSoundsMachine.AudioHandler;
 
 namespace MaraSoundsMachine
 {
-    public class SoundSource : StreamDef
+    public class SoundSource
     {
+        #region Base Fields
         private Enums.SampleName thisSample = Enums.SampleName.JjaroCreak;
         public Enums.SampleName ThisSample
         {
@@ -35,7 +36,6 @@ namespace MaraSoundsMachine
             set { enabled = value; }
         }
 
-        #region Base Fields
         private float base_volume = 1;
         public float Base_volume
         {
@@ -125,8 +125,59 @@ namespace MaraSoundsMachine
         }
         #endregion
 
+        #region Streaming Fields
+        private List<SoundStream> soundStreamList = new List<SoundStream>();
+        public List<SoundStream> SoundStreamList
+        {
+            get { return soundStreamList; }
+            set { soundStreamList = value; }
+        }
+
+        private List<WaveFormat> waveFormatList = new List<WaveFormat>();
+        public List<WaveFormat> WaveFormatList
+        {
+            get { return waveFormatList; }
+            set { waveFormatList = value; }
+        }
+
+        private List<AudioBuffer> audioBufferList = new List<AudioBuffer>();
+        public List<AudioBuffer> AudioBufferList
+        {
+            get { return audioBufferList; }
+            set { audioBufferList = value; }
+        }
+
+        private SourceVoice sourceVoice = null;
+        public SourceVoice SourceVoice
+        {
+            get { return sourceVoice; }
+            set { sourceVoice = value; }
+        }
+
+        private SoundStream soundStream = null;
+        public SoundStream SoundStream
+        {
+            get { return soundStream; }
+            set { soundStream = value; }
+        }
+
+        private bool audioBufferBusy = false;
+        public bool AudioBufferBusy
+        {
+            get { return audioBufferBusy; }
+            set { audioBufferBusy = value; }
+        }
+
+        private bool isPlaying = false;
+        public bool IsPlaying
+        {
+            get { return isPlaying; }
+            set { isPlaying = value; }
+        }
+        #endregion
+
         #region Methods
-        public List<string> ListAllWavePaths()
+        private List<string> ListAllWavePaths()
         {
             List<string> wavePaths = new List<string>();
 
@@ -138,7 +189,7 @@ namespace MaraSoundsMachine
             return wavePaths;
         }
 
-        public void LoadAllWavesToMemory()
+        private void LoadAllWavesToMemory()
         {
             AudioBufferBusy = true;
 
@@ -159,7 +210,7 @@ namespace MaraSoundsMachine
                     Flags = BufferFlags.EndOfStream
                 });
 
-                SoundStreamList.Last().Close();   
+                SoundStreamList.Last().Dispose();   
             }
 
             AudioBufferBusy = false;
@@ -169,26 +220,15 @@ namespace MaraSoundsMachine
         {
             IsPlaying = true;
 
-            if (!PathMgt.IsSoundSampleRandom(ThisSample))
+            bool isRandom = PathMgt.IsSoundSampleRandom(ThisSample);
+
+            new Thread(() =>
             {
-                new Thread(() =>
-                {
-                    Thread.CurrentThread.IsBackground = true;
+                Thread.CurrentThread.IsBackground = true;
 
-                    StartAmbient();
+                StartPlayback(isRandom);
 
-                }).Start();
-            }
-            else
-            {
-                new Thread(() =>
-                {
-                    Thread.CurrentThread.IsBackground = true;
-
-                    StartRandom();
-
-                }).Start();
-            }
+            }).Start();
         }
 
         public void Stop()
@@ -196,69 +236,18 @@ namespace MaraSoundsMachine
             IsPlaying = false;
         }
 
-        private void StartAmbient()
-        {
-            Random randSeed = new Random();
-            Random randWaveSeed = new Random();
-
-            LoadAllWavesToMemory();
-
-            #region Playback loop
-            while (IsPlaying)
-            {
-                if (!AudioBufferBusy)
-                {
-                    AudioBufferBusy = true;
-
-                    CalcFx();
-
-                    int randomWaveIndex = randWaveSeed.Next(0, waveList.Count);
-
-                    SourceVoice = new SourceVoice(yourAudiodevice, WaveFormatList[randomWaveIndex], true);
-
-                    // Adds a sample callback to check that they are working on source voices
-                    SourceVoice.BufferEnd += (context) => AudioBufferBusy = false;
-                    SourceVoice.SubmitSourceBuffer(AudioBufferList[randomWaveIndex], SoundStreamList[randomWaveIndex].DecodedPacketsInfo);
-
-                    SourceVoice.SetVolume(Inst_volume);
-
-                    float panR = (Inst_pan < 0) ? (1 + Inst_pan) : 1;
-                    float panL = (Inst_pan >= 0) ? (1 - Inst_pan) : 1;
-
-                    float[] panXfm = { panL, panR };
-
-                    SourceVoice.SetOutputMatrix(1, 2, panXfm);
-
-                    float freqRatio = 1;
-
-                    if (Inst_pitch > 1)
-                    {
-                        freqRatio = (float)Math.Pow(Inst_pitch, 10);
-                    }
-                    else
-                    {
-                        freqRatio = (float)Math.Pow(Inst_pitch, 0.5);
-                    }
-
-                    SourceVoice.SetFrequencyRatio(freqRatio);
-
-                    SourceVoice.Start();
-
-                    AudioBufferList[randomWaveIndex].Stream.Dispose();
-                }
-
-                System.Threading.Thread.Sleep(33);
-            }
-            #endregion
-        }
-
-        private void StartRandom()
+        private void StartPlayback(bool isRandom)
         {
             Random randSeed = new Random();
             Random randWaveSeed = new Random();
             int randTickCounter = 0;
 
             LoadAllWavesToMemory();
+
+            if (!isRandom)
+            {
+                Inst_period_ticks = 0;
+            }
 
             #region Playback loop
             while (IsPlaying)
@@ -268,6 +257,11 @@ namespace MaraSoundsMachine
                     AudioBufferBusy = true;
 
                     CalcFx();
+
+                    if (!isRandom)
+                    {
+                        Inst_period_ticks = 0;
+                    }
 
                     int randomWaveIndex = randWaveSeed.Next(0, WaveList.Count);
 

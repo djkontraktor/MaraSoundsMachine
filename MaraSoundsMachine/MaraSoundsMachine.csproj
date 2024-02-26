@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioHandler.cs" />
-    <Compile Include="StreamDef.cs" />
     <Compile Include="PathMgt.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="SoundSource.cs" />

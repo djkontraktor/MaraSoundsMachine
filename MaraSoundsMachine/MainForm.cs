@@ -100,21 +100,21 @@ namespace MaraSoundsMachine
             // 
             // pitchH_Label
             // 
-            pitchH_Label.AutoSize = true;
-            pitchH_Label.Location = new System.Drawing.Point(268, 374);
-            pitchH_Label.Name = "pitchH_Label";
-            pitchH_Label.Size = new System.Drawing.Size(14, 14);
-            pitchH_Label.TabIndex = 33;
-            pitchH_Label.Text = "5";
+            pitchR_label.AutoSize = true;
+            pitchR_label.Location = new System.Drawing.Point(268, 374);
+            pitchR_label.Name = "pitchR_label";
+            pitchR_label.Size = new System.Drawing.Size(14, 14);
+            pitchR_label.TabIndex = 33;
+            pitchR_label.Text = "5";
             // 
             // pitchL_Label
             // 
-            pitchL_Label.AutoSize = true;
-            pitchL_Label.Location = new System.Drawing.Point(18, 374);
-            pitchL_Label.Name = "pitchL_Label";
-            pitchL_Label.Size = new System.Drawing.Size(28, 14);
-            pitchL_Label.TabIndex = 32;
-            pitchL_Label.Text = "0.1";
+            pitchL_label.AutoSize = true;
+            pitchL_label.Location = new System.Drawing.Point(18, 374);
+            pitchL_label.Name = "pitchL_label";
+            pitchL_label.Size = new System.Drawing.Size(28, 14);
+            pitchL_label.TabIndex = 32;
+            pitchL_label.Text = "0.1";
             // 
             // deltaPitch_Header
             // 
@@ -470,6 +470,7 @@ namespace MaraSoundsMachine
             newDefaultTabPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
             newDefaultTabPage.Controls.Add(soundSource_Enabled_checkBox);
+            newDefaultTabPage.Controls.Add(sampleSelector_Label);
             newDefaultTabPage.Controls.Add(sampleSelector_comboBox);
 
             newDefaultTabPage.Controls.Add(pan_Header);
@@ -511,15 +512,9 @@ namespace MaraSoundsMachine
             newDefaultTabPage.Controls.Add(deltaPitch_trackBar);
             newDefaultTabPage.Controls.Add(deltaPitchL_Label);
             newDefaultTabPage.Controls.Add(deltaPitchR_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
-            newDefaultTabPage.Controls.Add(sampleSelector_Label);
 
             newDefaultTabPage.Location = new System.Drawing.Point(4, 23);
-            newDefaultTabPage.Name = "appStart_tabPage";
+            newDefaultTabPage.Name = "newDefaultTabPage";
             newDefaultTabPage.Size = new System.Drawing.Size(600, 412);
             newDefaultTabPage.TabIndex = 0;
             newDefaultTabPage.Text = "Jjaro Ship Creak";
@@ -533,8 +528,7 @@ namespace MaraSoundsMachine
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
             tabHolder_tabControl.TabPages.Add(ReturnDefaultTabPage());
-            SoundSource newSoundSource = new SoundSource();
-            AudioHandler.soundSourcesList.Add(newSoundSource);
+            AudioHandler.soundSourcesList.Add(new SoundSource());
         }
 
         private void removeSoundSource_buttonClick(object sender, EventArgs e)
@@ -542,11 +536,7 @@ namespace MaraSoundsMachine
             if (tabHolder_tabControl.TabPages.Count > 1)
             {
                 tabHolder_tabControl.TabPages.RemoveAt(tabHolder_tabControl.TabPages.Count - 1);
-                AudioHandler.StopAudioPlayback();
-                if (AudioHandler.soundSourcesList.Count > 0)
-                {
-                    AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
-                }
+                AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
             }
         }
 
