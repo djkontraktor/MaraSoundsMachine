@@ -224,7 +224,7 @@ namespace MaraSoundsMachine
 
             new Thread(() =>
             {
-                Thread.CurrentThread.IsBackground = true;
+                Thread.CurrentThread.IsBackground = false;
 
                 StartPlayback(isRandom);
 

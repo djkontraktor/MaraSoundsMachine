@@ -19,6 +19,8 @@ namespace MaraSoundsMachine
         #region Main Form Components
         public MainForm()
         {
+            Thread.CurrentThread.IsBackground = true;
+
             InitializeComponent();
 
             SoundSource defaultSoundSource = new SoundSource();
@@ -26,7 +28,7 @@ namespace MaraSoundsMachine
         }
         #endregion
 
-        #region Tab Control Components
+        #region Constructors/Destructors
         private TabPage ReturnDefaultTabPage()
         {
             TabPage newDefaultTabPage = new TabPage();
@@ -522,22 +524,32 @@ namespace MaraSoundsMachine
 
             return newDefaultTabPage;
         }
-        #endregion
-
-        #region Main Form Button Callbacks
-        private void addSoundSource_buttonClick(object sender, EventArgs e)
+        
+        private void AddSoundSource()
         {
             tabHolder_tabControl.TabPages.Add(ReturnDefaultTabPage());
             AudioHandler.soundSourcesList.Add(new SoundSource());
         }
 
-        private void removeSoundSource_buttonClick(object sender, EventArgs e)
+        private void RemoveSoundSource()
         {
             if (tabHolder_tabControl.TabPages.Count > 1)
             {
                 tabHolder_tabControl.TabPages.RemoveAt(tabHolder_tabControl.TabPages.Count - 1);
                 AudioHandler.soundSourcesList.RemoveAt(AudioHandler.soundSourcesList.Count - 1);
             }
+        }
+        #endregion
+
+        #region Main Form Button Callbacks
+        private void addSoundSource_buttonClick(object sender, EventArgs e)
+        {
+            AddSoundSource();
+        }
+
+        private void removeSoundSource_buttonClick(object sender, EventArgs e)
+        {
+            RemoveSoundSource();
         }
 
         private void togglePlayback_ButtonClick(object sender, EventArgs e)
