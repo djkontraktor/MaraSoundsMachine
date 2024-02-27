@@ -148,6 +148,7 @@ namespace MaraSoundsMachine
             deltaPitch_trackBar.TickFrequency = 5;
             deltaPitch_trackBar.Value = 100;
             deltaPitch_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            deltaPitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // pitch_trackBar
             // 
@@ -161,6 +162,7 @@ namespace MaraSoundsMachine
             pitch_trackBar.TickFrequency = 5;
             pitch_trackBar.Value = 100;
             pitch_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            pitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // deltaPeriod_Header
             // 
@@ -201,6 +203,7 @@ namespace MaraSoundsMachine
             deltaPeriod_trackBar.TabIndex = 24;
             deltaPeriod_trackBar.TickFrequency = 5;
             deltaPeriod_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            deltaPeriod_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // deltaVolumeR_Label
             // 
@@ -239,6 +242,7 @@ namespace MaraSoundsMachine
             deltaVolume_trackBar.TabIndex = 20;
             deltaVolume_trackBar.TickFrequency = 5;
             deltaVolume_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            deltaVolume_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // deltaPanR_Label
             // 
@@ -278,6 +282,7 @@ namespace MaraSoundsMachine
             deltaPan_trackBar.TabIndex = 16;
             deltaPan_trackBar.TickFrequency = 5;
             deltaPan_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            deltaPan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // periodR_Label
             // 
@@ -320,6 +325,7 @@ namespace MaraSoundsMachine
             period_trackBar.TickFrequency = 5;
             period_trackBar.Value = 33;
             period_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            period_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // volumeR_Label
             // 
@@ -360,6 +366,7 @@ namespace MaraSoundsMachine
             volume_trackBar.TickFrequency = 5;
             volume_trackBar.Value = 100;
             volume_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
+            volume_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // panR_Label
             // 
@@ -400,7 +407,7 @@ namespace MaraSoundsMachine
             pan_trackBar.TabIndex = 4;
             pan_trackBar.TickFrequency = 5;
             pan_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
-            pan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(pan_TrackBarMouseReleased);
+            pan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
             // sampleSelector_Label
             // 
@@ -541,6 +548,8 @@ namespace MaraSoundsMachine
         }
         #endregion
 
+
+
         #region Main Form Button Callbacks
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
@@ -588,20 +597,10 @@ namespace MaraSoundsMachine
             this.tabHolder_tabControl.TabPages[currentTab].Text = englishSampleName;
         }
 
-        private void pan_TrackBarMouseReleased(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                TrackBar thisTrackBar = (TrackBar)tabHolder_tabControl.SelectedTab.Controls.Find("pan_trackBar", false)[0];
-                thisTrackBar.Value = 0;
-            }
-        }
-
         private void trackBarMoved(object sender, EventArgs e)
         {
             int currentTab = this.tabHolder_tabControl.SelectedIndex;
             TrackBar thisTrackBar = (TrackBar)sender;
-
             float factor = 0;
 
             string thisTrackBarName = thisTrackBar.Name.ToLower();
@@ -664,5 +663,67 @@ namespace MaraSoundsMachine
 
         }
         #endregion
+
+        private void trackBarReset(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                TrackBar thisTrackBar = (TrackBar)sender;
+                int defaultValue = 0;
+                string thisTrackBarName = thisTrackBar.Name.ToLower();
+
+                #region Which track bar?
+                // pitch
+                if (thisTrackBarName.StartsWith("pitch") && !thisTrackBarName.Contains("delta"))
+                {
+                    defaultValue = 10;
+                }
+
+                // volume
+                if (thisTrackBarName.StartsWith("volume") && !thisTrackBarName.Contains("delta"))
+                {
+                    defaultValue = 100;
+                }
+
+                // period
+                if (thisTrackBarName.StartsWith("period") && !thisTrackBarName.Contains("delta"))
+                {
+                    defaultValue = 33;
+                }
+
+                // pan
+                if (thisTrackBarName.StartsWith("pan") && !thisTrackBarName.Contains("delta"))
+                {
+                    defaultValue = 0;
+                }
+
+                // Dpitch
+                if (thisTrackBarName.Contains("pitch") && thisTrackBarName.StartsWith("delta"))
+                {
+                    defaultValue = 0;
+                }
+
+                // Dvolume
+                if (thisTrackBarName.Contains("volume") && thisTrackBarName.StartsWith("delta"))
+                {
+                    defaultValue = 0;
+                }
+
+                // Dperiod
+                if (thisTrackBarName.Contains("period") && thisTrackBarName.StartsWith("delta"))
+                {
+                    defaultValue = 0;
+                }
+
+                // Dpan
+                if (thisTrackBarName.Contains("pan") && thisTrackBarName.StartsWith("delta"))
+                {
+                    defaultValue = 0;
+                }
+                #endregion
+
+                thisTrackBar.Value = defaultValue;
+            }
+        }
     }
 }

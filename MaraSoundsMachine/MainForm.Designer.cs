@@ -202,6 +202,7 @@
             this.deltaPitch_trackBar.TabIndex = 29;
             this.deltaPitch_trackBar.TickFrequency = 5;
             this.deltaPitch_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.deltaPitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // pitch_trackBar
             // 
@@ -216,6 +217,7 @@
             this.pitch_trackBar.TickFrequency = 5;
             this.pitch_trackBar.Value = 10;
             this.pitch_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.pitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // deltaPeriod_Header
             // 
@@ -256,6 +258,7 @@
             this.deltaPeriod_trackBar.TabIndex = 24;
             this.deltaPeriod_trackBar.TickFrequency = 5;
             this.deltaPeriod_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.deltaPeriod_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // deltaVolumeR_Label
             // 
@@ -294,6 +297,7 @@
             this.deltaVolume_trackBar.TabIndex = 20;
             this.deltaVolume_trackBar.TickFrequency = 5;
             this.deltaVolume_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.deltaVolume_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // deltaPanR_Label
             // 
@@ -333,6 +337,7 @@
             this.deltaPan_trackBar.TabIndex = 16;
             this.deltaPan_trackBar.TickFrequency = 5;
             this.deltaPan_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.deltaPan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // periodR_Label
             // 
@@ -375,6 +380,7 @@
             this.period_trackBar.TickFrequency = 5;
             this.period_trackBar.Value = 33;
             this.period_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.period_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // volumeR_Label
             // 
@@ -415,6 +421,7 @@
             this.volume_trackBar.TickFrequency = 5;
             this.volume_trackBar.Value = 100;
             this.volume_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
+            this.volume_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // panR_Label
             // 
@@ -455,7 +462,7 @@
             this.pan_trackBar.TabIndex = 4;
             this.pan_trackBar.TickFrequency = 5;
             this.pan_trackBar.ValueChanged += new System.EventHandler(this.trackBarMoved);
-            this.pan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pan_TrackBarMouseReleased);
+            this.pan_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarReset);
             // 
             // sampleSelector_Label
             // 
