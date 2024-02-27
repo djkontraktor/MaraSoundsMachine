@@ -267,6 +267,12 @@ namespace MaraSoundsMachine
 
                     SourceVoice = new SourceVoice(yourAudiodevice, WaveFormatList[randomWaveIndex], true);
 
+                    if (Inst_pitch != 1)
+                    {
+                        int baseSampleRate = WaveFormatList[randomWaveIndex].SampleRate;
+                        SourceVoice.SourceSampleRate = (int)(baseSampleRate * Inst_pitch);
+                    }
+
                     // Adds a sample callback to check that they are working on source voices
                     SourceVoice.BufferEnd += (context) => AudioBufferBusy = false;
                     SourceVoice.SubmitSourceBuffer(AudioBufferList[randomWaveIndex], SoundStreamList[randomWaveIndex].DecodedPacketsInfo);
@@ -279,19 +285,6 @@ namespace MaraSoundsMachine
                     float[] panXfm = { panL, panR };
 
                     SourceVoice.SetOutputMatrix(1, 2, panXfm);
-
-                    float freqRatio = 1;
-
-                    if (Inst_pitch > 1)
-                    {
-                        freqRatio = (float)Math.Pow(Inst_pitch, 10);
-                    }
-                    else
-                    {
-                        freqRatio = (float)Math.Pow(Inst_pitch, 0.5);
-                    }
-
-                    SourceVoice.SetFrequencyRatio(freqRatio);
 
                     SourceVoice.Start();
 
