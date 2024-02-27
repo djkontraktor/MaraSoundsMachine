@@ -548,8 +548,6 @@ namespace MaraSoundsMachine
         }
         #endregion
 
-
-
         #region Main Form Button Callbacks
         private void addSoundSource_buttonClick(object sender, EventArgs e)
         {
@@ -662,7 +660,6 @@ namespace MaraSoundsMachine
             #endregion
 
         }
-        #endregion
 
         private void trackBarReset(object sender, MouseEventArgs e)
         {
@@ -725,5 +722,8 @@ namespace MaraSoundsMachine
                 thisTrackBar.Value = defaultValue;
             }
         }
+        #endregion
+
+
     }
 }
