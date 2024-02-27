@@ -222,13 +222,7 @@ namespace MaraSoundsMachine
 
             bool isRandom = PathMgt.IsSoundSampleRandom(ThisSample);
 
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = false;
-
-                StartPlayback(isRandom);
-
-            }).Start();
+            StartPlayback(isRandom);
         }
 
         public void Stop()
