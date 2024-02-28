@@ -32,33 +32,15 @@ namespace MaraSoundsMachine
 
                 Parallel.ForEach(soundSourcesList, soundSource =>
                 {
-                    if (soundSource.Enabled && uiPlaybackEnabled)
-                    {
-                        soundSource.Play();
-                    }
+                    soundSource.StartPlayback(PathMgt.IsSoundSampleRandom(soundSource.ThisSample));
                 });
 
             }).Start();
-
-            
-
-            //foreach (SoundSource soundSource in soundSourcesList)
-            //{
-            //    if (soundSource.Enabled && uiPlaybackEnabled)
-            //    {
-            //        soundSource.Play();
-            //    }
-            //}
         }
 
         public static void StopAudioPlayback()
         {
             uiPlaybackEnabled = false;
-
-            foreach (SoundSource soundSource in soundSourcesList)
-            {
-                soundSource.Stop();
-            }
         }
         #endregion
     }

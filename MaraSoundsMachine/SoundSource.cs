@@ -167,13 +167,6 @@ namespace MaraSoundsMachine
             get { return audioBufferBusy; }
             set { audioBufferBusy = value; }
         }
-
-        private bool isPlaying = false;
-        public bool IsPlaying
-        {
-            get { return isPlaying; }
-            set { isPlaying = value; }
-        }
         #endregion
 
         #region Methods
@@ -216,21 +209,7 @@ namespace MaraSoundsMachine
             AudioBufferBusy = false;
         }
 
-        public void Play()
-        {
-            IsPlaying = true;
-
-            bool isRandom = PathMgt.IsSoundSampleRandom(ThisSample);
-
-            StartPlayback(isRandom);
-        }
-
-        public void Stop()
-        {
-            IsPlaying = false;
-        }
-
-        private void StartPlayback(bool isRandom)
+        public void StartPlayback(bool isRandom)
         {
             Random randSeed = new Random();
             Random randWaveSeed = new Random();
@@ -244,9 +223,9 @@ namespace MaraSoundsMachine
             }
 
             #region Playback loop
-            while (IsPlaying)
+            while (uiPlaybackEnabled)
             {
-                if (!AudioBufferBusy && (randTickCounter >= Inst_period_ticks))
+                if (!AudioBufferBusy && (randTickCounter >= Inst_period_ticks) && Enabled)
                 {
                     AudioBufferBusy = true;
 
@@ -292,6 +271,9 @@ namespace MaraSoundsMachine
                 randTickCounter = (randTickCounter >= 999) ? 0 : (randTickCounter + 1);
             }
             #endregion
+
+            SourceVoice.DestroyVoice();
+            SourceVoice.Dispose();
         }
 
         private void CalcFx()

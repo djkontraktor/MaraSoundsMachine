@@ -536,6 +536,11 @@ namespace MaraSoundsMachine
         {
             tabHolder_tabControl.TabPages.Add(ReturnDefaultTabPage());
             AudioHandler.soundSourcesList.Add(new SoundSource());
+
+            if (AudioHandler.soundSourcesList.Last().Enabled)
+            {
+                AudioHandler.soundSourcesList.Last().StartPlayback(PathMgt.IsSoundSampleRandom(AudioHandler.soundSourcesList.Last().ThisSample));
+            }
         }
 
         private void RemoveSoundSource()
