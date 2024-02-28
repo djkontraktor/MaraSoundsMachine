@@ -146,7 +146,7 @@ namespace MaraSoundsMachine
             deltaPitch_trackBar.Size = new System.Drawing.Size(261, 45);
             deltaPitch_trackBar.TabIndex = 29;
             deltaPitch_trackBar.TickFrequency = 5;
-            deltaPitch_trackBar.Value = 100;
+            deltaPitch_trackBar.Value = 0;
             deltaPitch_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
             deltaPitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
@@ -160,7 +160,7 @@ namespace MaraSoundsMachine
             pitch_trackBar.Size = new System.Drawing.Size(261, 45);
             pitch_trackBar.TabIndex = 28;
             pitch_trackBar.TickFrequency = 5;
-            pitch_trackBar.Value = 100;
+            pitch_trackBar.Value = 10;
             pitch_trackBar.ValueChanged += new System.EventHandler(trackBarMoved);
             pitch_trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(trackBarReset);
             // 
@@ -476,6 +476,7 @@ namespace MaraSoundsMachine
 
             #region Tab Page Definition
             newDefaultTabPage.BackColor = System.Drawing.Color.Black;
+            newDefaultTabPage.ForeColor = Color.Lime;
             newDefaultTabPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 
             newDefaultTabPage.Controls.Add(soundSource_Enabled_checkBox);
@@ -486,41 +487,57 @@ namespace MaraSoundsMachine
             newDefaultTabPage.Controls.Add(pan_trackBar);
             newDefaultTabPage.Controls.Add(panL_Label);
             newDefaultTabPage.Controls.Add(panR_Label);
+            newDefaultTabPage.Controls.Find("panL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("panR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(volume_Header);
             newDefaultTabPage.Controls.Add(volume_trackBar);
             newDefaultTabPage.Controls.Add(volumeL_Label);
             newDefaultTabPage.Controls.Add(volumeR_Label);
+            newDefaultTabPage.Controls.Find("volumeL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("volumeR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(period_Header);
             newDefaultTabPage.Controls.Add(period_trackBar);
             newDefaultTabPage.Controls.Add(periodL_Label);
             newDefaultTabPage.Controls.Add(periodR_Label);
+            newDefaultTabPage.Controls.Find("periodL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("periodR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(pitch_Header);
             newDefaultTabPage.Controls.Add(pitch_trackBar);
             newDefaultTabPage.Controls.Add(pitchL_label);
             newDefaultTabPage.Controls.Add(pitchR_label);
+            newDefaultTabPage.Controls.Find("pitchL_label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("pitchR_label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(deltaPan_Header);
             newDefaultTabPage.Controls.Add(deltaPan_trackBar);
             newDefaultTabPage.Controls.Add(deltaPanL_Label);
             newDefaultTabPage.Controls.Add(deltaPanR_Label);
+            newDefaultTabPage.Controls.Find("deltaPanL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("deltaPanR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(deltaVolume_Header);
             newDefaultTabPage.Controls.Add(deltaVolume_trackBar);
             newDefaultTabPage.Controls.Add(deltaVolumeL_Label);
             newDefaultTabPage.Controls.Add(deltaVolumeR_Label);
+            newDefaultTabPage.Controls.Find("deltaVolumeL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("deltaVolumeR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(deltaPeriod_Header);
             newDefaultTabPage.Controls.Add(deltaPeriod_trackBar);
             newDefaultTabPage.Controls.Add(deltaPeriodL_Label);
             newDefaultTabPage.Controls.Add(deltaPeriodR_Label);
+            newDefaultTabPage.Controls.Find("deltaPeriodL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("deltaPeriodR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Controls.Add(deltaPitch_Header);
             newDefaultTabPage.Controls.Add(deltaPitch_trackBar);
             newDefaultTabPage.Controls.Add(deltaPitchL_Label);
-            newDefaultTabPage.Controls.Add(deltaPitchR_Label);
+            newDefaultTabPage.Controls.Add(deltaPitchR_Label);           
+            newDefaultTabPage.Controls.Find("deltaPitchL_Label", false)[0].BringToFront();
+            newDefaultTabPage.Controls.Find("deltaPitchR_Label", false)[0].BringToFront();
 
             newDefaultTabPage.Location = new System.Drawing.Point(4, 23);
             newDefaultTabPage.Name = "newDefaultTabPage";
@@ -733,7 +750,6 @@ namespace MaraSoundsMachine
             }
         }
         #endregion
-
 
     }
 }

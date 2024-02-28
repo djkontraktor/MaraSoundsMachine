@@ -91,6 +91,7 @@
             this.tabHolder_tabControl.SelectedIndex = 0;
             this.tabHolder_tabControl.Size = new System.Drawing.Size(608, 439);
             this.tabHolder_tabControl.TabIndex = 0;
+            this.tabHolder_tabControl.TabStop = false;
             // 
             // appStart_tabPage
             // 
