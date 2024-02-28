@@ -26,16 +26,10 @@ namespace MaraSoundsMachine
         {
             uiPlaybackEnabled = true;
 
-            new Thread(() =>
+            foreach (SoundSource soundSource in soundSourcesList)
             {
-                Thread.CurrentThread.IsBackground = false;
-
-                Parallel.ForEach(soundSourcesList, soundSource =>
-                {
-                    soundSource.StartPlayback(PathMgt.IsSoundSampleRandom(soundSource.ThisSample));
-                });
-
-            }).Start();
+                soundSource.StartPlayback();
+            }
         }
 
         public static void StopAudioPlayback()

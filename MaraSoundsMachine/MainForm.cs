@@ -539,7 +539,7 @@ namespace MaraSoundsMachine
 
             if (AudioHandler.soundSourcesList.Last().Enabled)
             {
-                AudioHandler.soundSourcesList.Last().StartPlayback(PathMgt.IsSoundSampleRandom(AudioHandler.soundSourcesList.Last().ThisSample));
+                AudioHandler.soundSourcesList.Last().StartPlayback();
             }
         }
 
@@ -586,6 +586,11 @@ namespace MaraSoundsMachine
             CheckBox thisCheckBox = (CheckBox)sender;
 
             AudioHandler.soundSourcesList[currentTab].Enabled = thisCheckBox.Checked;
+
+            if (AudioHandler.uiPlaybackEnabled && thisCheckBox.Checked)
+            {
+                AudioHandler.soundSourcesList[currentTab].StartPlayback();
+            }
         }
 
         private void sampleName_ComboBoxStateChanged(object sender, EventArgs e)

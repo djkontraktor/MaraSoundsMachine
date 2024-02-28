@@ -209,11 +209,13 @@ namespace MaraSoundsMachine
             AudioBufferBusy = false;
         }
 
-        public void StartPlayback(bool isRandom)
+        private void ThreadedPlaybackCall(Object stateInfo)
         {
             Random randSeed = new Random();
             Random randWaveSeed = new Random();
+            Enums.SampleName priorSample = ThisSample;
             int randTickCounter = 0;
+            bool isRandom = PathMgt.IsSoundSampleRandom(ThisSample);
 
             LoadAllWavesToMemory();
 
@@ -231,10 +233,17 @@ namespace MaraSoundsMachine
 
                     CalcFx();
 
+                    if (!priorSample.Equals(ThisSample))
+                    {
+                        isRandom = PathMgt.IsSoundSampleRandom(ThisSample);
+                        LoadAllWavesToMemory();
+                        CalcFx();
+                    }
+
                     if (!isRandom)
                     {
                         Inst_period_ticks = 0;
-                    }
+                    }            
 
                     int randomWaveIndex = randWaveSeed.Next(0, WaveList.Count);
 
@@ -264,6 +273,8 @@ namespace MaraSoundsMachine
                     AudioBufferList[randomWaveIndex].Stream.Dispose();
 
                     randTickCounter = 0;
+
+                    priorSample = ThisSample;
                 }
 
                 System.Threading.Thread.Sleep(33);
@@ -274,6 +285,11 @@ namespace MaraSoundsMachine
 
             SourceVoice.DestroyVoice();
             SourceVoice.Dispose();
+        }
+
+        public void StartPlayback()
+        {
+            ThreadPool.QueueUserWorkItem(ThreadedPlaybackCall);
         }
 
         private void CalcFx()
